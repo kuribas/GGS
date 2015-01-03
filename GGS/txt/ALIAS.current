@@ -1,0 +1,159 @@
+: system alias 152
+,        t $_recv $
+,,       t $_recv $; echo ack(,) $_recv
+.        t $_send $
+..       t $_send $; echo ack(.) $_send
+007      OO7
+A        salias $
+GGS      : ios*end
+H        shistory
+IOS      : ios*beg
+a        : alias $
+b        : bell $
+c        : chann $
+f        : finger $
+fr       v _tmp $_send;, $;v _send $_tmp
+ft       v _tmp $_send;t $;v _send $_tmp
+g        : group $
+gg       a g12 1 $A 2
+h        : history $
+i        : ignore $
+ios*beg  : verbose -ack;no_promp;: var IOS_MODE yes;a abort ios_abo '$;a accept ios_acc '$;a autoacc ios_auto ;a ask ios_ask '$;a blitz ios_blit '$;a board ios_boa ;a break ios_bre '$;a commands ios_com '$;a continue ios_con '$;a decline ios_dec '$;a games ios_gam '$;a exit ios_exi;a finge ios_fin '$;a f ios_fin '$;a hist ios_hist '$;a kib ios_kib '$;a = ios_kkib '$;a mat ios_mat '$;a match ios_mat '$;a mat10 ios_mat1 '$;a match10 ios_mat1 '$;a moves ios_mov '$;a ms ios_ms '$;a go ios_go;a ghistory ios_list '$;a ghist ios_list '$;a leave ios_lea '$;a list ios_list '$;a msa ios_msa;a msck ios_msck;a mso ios_mso;a observe ios_obs '$;a obs ios_obs '$;a open ios_ope '$;a play ios_pla '$;a players ios_who;a prefix ios_pre '$;a rated ios_rat '$;a stored ios_sto '$;a ts ios_ts '$;a resign ios_res '$;a t ios_tell '$;a . ios_. '$;a , ios_, '$;a undo ios_undo '$;a ungo ios_ungo;a w ios_who;a whoobs ios_whoo;a y ios_yell '$;a othello  ios_soth;a checkers ios_sche;a amazon ios_samz; a .ggsrc ios_log; ios_serv ; open 10; stored ; ios_prom
+ios*end  : no_promp;: var IOS_MODE no; prefix;unalias abort;unalias accept;unalias autoacc;unalias ask;unalias blitz;unalias board;unalias break;unalias commands;unalias continue;unalias decline;unalias exit;unalias finge;unalias f;unalias games;unalias go;unalias kib;unalias =;unalias hist;unalias ghistory;unalias ghist;unalias leave;unalias list;unalias mat;unalias match;unalias mat10;unalias match10;unalias moves;unalias ms;unalias msa;unalias mso;unalias msck;unalias obs;unalias observe;unalias open;unalias play;unalias players;unalias prefix;unalias rated;unalias resign;unalias stored;unalias ts;unalias t;unalias .;unalias ,;unalias undo;unalias ungo;unalias w;unalias whoobs;unalias y;unalias othello;unalias amazon;unalias checkers;unalias ios_prom;unalias ios_serv;unalias .ggsrc;ios_ggs
+ios_,    : no_promp; tell $_recv $ ; ios_told $_send ; ios_prom
+ios_.    : no_promp; tell $_send $ ; ios_told $_send ; ios_prom
+ios_abo  tell $service abort $  ; : var _pfix
+ios_acc  tell $service accept .$ ; go
+ios_ams  : var _ready AMZ
+ios_ask  : mso ; tell $service open 1 ; tell $service ask $ ; go
+ios_auto tell $service aform T
+ios_blit : open 1 ; ios_prop $; tell $service ask 8 5 5 $ ; go
+ios_boa  : tell $service moves
+ios_bre  tell $service break $ ; : var _pfix
+ios_c3   tell $service play c3 ; go
+ios_c4   tell $service play c4 ; go
+ios_c5   tell $service play c5 ; go
+ios_cks  : var _ready CHECKERS
+ios_com  tell $service help cmds$
+ios_con  : mso ; tell $service open 10 ; tell $service ask .$ ; go
+ios_d3   tell $service play d3 ; go
+ios_d6   tell $service play d6 ; go
+ios_dec  tell $service decline $
+ios_e3   tell $service play e3 ; go
+ios_e6   tell $service play e6 ; go
+ios_exi  : quit
+ios_f4   tell $service play f4 ; go
+ios_f5   tell $service play f5 ; go
+ios_f6   tell $service play f6 ; go
+ios_fin  : finger $ ; tell $service finger $
+ios_gam  tell $service match $
+ios_ggo  a f5 ios_f5; a c4 ios_c4; a e6 ios_e6; a d3 ios_d3; a f6 ios_f6; a c3 ios_c3; a d6 ios_d6; a c5 ios_c5; a f4 ios_f4; a e3 ios_e3
+ios_ggs  : var _ready READY
+ 
+ios_go   : var _pfix tell $service play ; tell $service watch +
+ios_hist : history $
+ios_ios  : var _ready IOS  
+ios_kbed : var _ready kibbitzed to game $ 
+#
+ios_kib  : no_promp; : var _lastkib $0 ; ios_kbed $0 ; no_promp; tell $service tell .$ ; ios_prom
+ios_kkib : no_promp; ios_kbed $_lastkib ; no_promp; tell $service tell .$_lastkib $   ; ios_prom
+ios_lea  tell $service watch - .$
+ios_list tell $service shistory $
+ios_log  : verb-; no_promp; ios_ggo ; ios_prom;
+ios_mat  : open 1 ; ios_prop $; tell $service ask 8 $ ; go
+ios_mat1 : open 1 ;tell $service rated + ; ios_pro1 $; tell $service ask 10 $ ; go
+ios_mov  tell $service moves $
+ios_ms   : var service $
+ios_msa  : var service /ams
+ios_msck : var service /cks
+ios_mso  : var service /os
+ios_obs  tell $service watch + .$ ; tell $service watch +
+ios_ope  tell $service open $
+ios_pla  tell $service play $
+ios_pre  : no_promp; : var _pfix $ ;ios_ios
+ios_pro1 : var _temppro $_send ; tell $ I propose you a 10x10 game... ; : var _send $_temppro
+ios_prom : ios_ios
+ios_prop : var _temppro $_send ; tell $ I propose you a game... ; : var _send $_temppro
+ios_rat  tell $service rated $
+ios_res  tell $service resign $ ; : var _pfix
+ios_rser : ms $_tempser ;
+ios_samz : no_promp; msa; open 10; stored; a ios_serv msa; a ios_prom ios_ams; go; ios_prom ;
+ios_sche : no_promp; msck ; open 10; stored; a ios_serv msck; a ios_prom ios_cks; go;ios_prom;
+ios_serv : ios_mso
+ios_soth : no_promp; mso ; open 10; stored; a ios_serv mso; a ios_prom ios_ios; go; ios_prom;
+ios_sser : var _tempser $service ;
+ios_sto  tell $service stored $
+ios_tell : no_promp; tell $ ; ios_told $_send ; ios_prom
+ios_told : var _ready $ told 
+#
+ios_ts   tell $service $
+ios_undo tell $service undo $
+ios_ungo : prefix
+ios_vins : no_promp; verb-; ios_vira; a .ggsrc ios_vins; ios_ggs
+ios_vir  : verb-; no_promp; a .ggsrc ios_vins; ios_vira ; tell $_send $; ios_vpro ; repeat 20 ios_vins; ios_ggs
+ios_virA : A . ios_vir '$
+ios_vira : a . ios_vir '$
+ios_vpro : var _ready   
+  This is the first GGS virus !! 
+
+ 
+ios_who  : who ; tell $service who 8
+ios_whoo tell $service watch ?
+ios_yell : no_promp; tell .chat $ ; ios_told .chat ; ios_prom
+ki       ts tell $
+kim      ts tell $_match $
+m        mux $
+ms       v _service $
+msa      ms /ams
+msc      ms /cs
+msck     ms /cks
+msg      ms /go
+mso      ms /os
+n        : notify $
+no_promp : var _ready 
+p        : v _pfix $
+prefix   : v _pfix $
+promp_sp : var _ready 
+prompt   v _ready >;v _alert #
+q        : quit $
+r        : repeat $
+sm       v _match $
+st       v _type $
+sti      stat_inp $
+sto      stat_out $
+stu      stat_user $
+t        tell $
+ta       ts ask $
+tac      ts accept $
+tas      ts assess $
+tat      ts assess $_type $
+td       ts decline $
+tfa      ts aform $
+tfd      ts dform $
+th       ts help $
+tm       ts match $
+tmm      ts moves  $_match $
+tmo      ts moves $
+to       ts match $
+to+      ts watch + $
+to-      ts watch - $
+tp       ts play $
+tpm      ts play $_match $
+tr       ts rank $
+trt      ts rank $_type $
+ts       t $_service $
+tt       ts top $
+ttt      ts top $_type $
+tw       ts who $
+twt      ts who $_type $
+u        uptime $
+unalias  : alias $0
+v        : var $
+ve       : verbose $
+verb+    : verbose +ack
+verb-    : verbose -ack
+w        : who
+wi       ts tell o $
+wim      ts tell o $_match $
+y        : yell $
+yell     tell .chat $

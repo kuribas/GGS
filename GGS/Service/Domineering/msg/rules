@@ -1,0 +1,45 @@
+            The game of domineering
+            ^^^^^^^^^^^^^^^^^^^^^^^
+
+In domineering the players alternately place a domino
+(2x1 tile) on a board. The two players are denoted by
+Vertical and Horizontal (black and white respectively).
+In standard domineering the first player is Vertical,
+who is only allowed to place its dominoes vertically on
+the board. Horizontal may play only horizontally. Of course,
+dominoes are not allowed to overlap. The game continues
+until there are no areas where both players can move.
+When this happens the service calculates the remaining moves
+after optimal play and the score is the difference between
+the total number of moves made in the game by each player.
+
+To place a domino, consider the following example:
+
+    A B C D
+   +-+-+-+-+
+ 1 |O|O|-|*| 1
+ 2 |-|-|-|*| 2
+ 3 |-|*|-|-| 3
+ 4 |-|*|-|-| 4
+   +-+-+-+-+
+    A B C D
+O to move (horizontal)
+
+Horizontal (white) can place on A2, B2, C3, and C4. After placing
+on A2 the board will look like this:
+
+    A B C D
+   +-+-+-+-+
+ 1 |O|O|-|*| 1
+ 2 |O|O|-|*| 2
+ 3 |-|*|-|-| 3
+ 4 |-|*|-|-| 4
+   +-+-+-+-+
+    A B C D
+* to move (vertical)
+
+and it will be vertical's (black) turn.
+
+Comments, bug reports, etc:
+Daniel Lidström (dan),
+danli97@ite.mh.se

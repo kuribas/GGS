@@ -1,0 +1,272 @@
+GGS Format, or how to parse messages that are coming from the server.
+
+Syntax: 
+..        ::= sequence
+a|b       ::= either a or b
+[a]       ::= a is optional
+<V F>     ::= variable V formated with F (C-printf format)
+[on]      ::= a vt100 color sequence if vt100 is on
+[off]     ::= a vt100 reset sequence if vt100 is on
+text      ::= a real text that is send
+{n}       ::= line number n, for easy referencing of multi line messages
+<break>   ::= \n or vt100 sequence, interrupt message
+<end>     ::= [on]READY[off] or [on]ALERT[off], a message terminator
+//comment ::= comment, not part of a message
+
+Every command will respond with either message in following format or
+an error message. Error messages are defined as:
+: [on]ERR[off] <message string %s>
+
+
+- alias
+: [on]alias[off] <no int %d>
+{1..no}<name %-8s> <definition %s>
+<end>
+
+- alias ?<prefix>
+: [on]alias[off]
+{1..?}<name %-8s> <definition string %s>
+<end>
+
+- alias <name>
+- alias <name> <definition>
+<end>
+
+
+- var
+: [on]var[off] <no int %d>
+{1..no}<name %-8s> <definition %s>
+<end>
+
+- var ?<prefix>
+: [on]var[off]
+{1..?}<name %-8s> <definition %s>
+<end>
+
+- var <name>
+- var <name> <definition>
+<end>
+
+
+- bell  [+|-]
+- vt100 [+|-]
+- hear  [+|-]
+- mode  <num>
+- info  [text]
+<end>
+
+- passw <new> <old> [login]
+<end>
+
+
+- who
+: [on]who[off] <no int %d>
+{1..no}[on]<login %-8s> <idle HHMMSS> <online HHMMSS> [<ipaddr %s> [hostname %s]][off]
+<end>
+
+
+- finger [login ... login]
+: [on]finger[off]
+login : <login %s>
+dblen : <pcts %5.1f> = <compressed %d> / <uncompressed %d>
+passw : <passw %s>  // may not be shown
+name  : <name  %s>
+info  : <info  %s>  // can have several entries if multiline
+email : <email %s>  // may not be shown
+since : <date %s>
+idle  : <idle HHMMSS>, on line : <HHMMSS>
+host  : <ipaddr %s> <hostname %s> // may not be shown
+sock  : <fd int> @ <port int>     // may not be shown
+bell  : +|-
+vt100 : +|-
+hear  : +|-
+mode  : <%d>
+groups(+|-) : <_group %s> .. <_group %s>
+channs(+|-) : <.chann %s> .. <.chann %s> // hidden channels may not be shown
+notify(+|-) : [*] <login %s> .. <login %s>
+ignore(+|-) : <login %s> .. <login %s>
+<end>
+
+
+- history
+- history <login> .. <login>
+: [on]history[off] <login %s> <len %d>
+{1..len}<date %s> <online HHMMSS> [@ <ipaddr %s> <hostanme %s>]
+<end>
+
+
+- tell <who>,...,<who> [message]
+<end>
+// the recepient (who) gets:
+<break>
+<_group|.chann %s> <login %s>: [message]
+<end>
+
+- . [message]
+[on]tell[off] <recepient %s>
+<end>
+
+- , [message]
+[on]tell[off] <recepient %s>
+<end>
+
+
+- quit 
+: Thank you for using VC.
+<end>
+
+- quit <login> [passw]
+<end>
+// the disconnected party gets:
+<break>
+: User <login %s> disconnected you.
+: Thank you for using VC.
+
+
+- chann
+: chann <no %d> : <chann %s>(<%d>) .. // hidden channels are counted but not shown
+<end>
+
+- chann +|-
+- chann *|%
+<end>
+// when somebody joins/leaves the channel you get:
+<break>
+: +|- <login %s> <.chann %s>
+<end>
+
+- chann <chann> .. <chann>
+: [on]chann[off] <chann %s> <%d> : <login %s> ..
+<end> 
+
+- chann +|- <chann> .. <chann>
+<end>    
+
+
+- group
+: [on]group[off] <no %d> : *(<members %d>) <group %s>(<members %d>) ..
+
+- group +|-
+<end>
+// when somebody joins/leaves the group you get:
+<break>
+: +|- <login %s> <_group %s>
+<end>
+
+- group <group> .. <group> 
+: [on]group[off] <group %s> <members %d> : <login %s> ..
+<end> 
+
+- group +|- <group> .. <group>
+<end>
+
+- group <group> .. <group> +|- <login> .. <login>
+<end>
+
+
+- notify
+: [on]notify[off] <no %d> : <notifyee %s>(<notifiers %d>) ..
+<end>
+
+- notify +|-
+<end>
+// when somebody adds/dels you from his notify list you get:
+<break>
+: +|- <login %s> notify
+<end>
+
+- notify *|%
+<end>
+// if *, you will receive notify messages (as above) for every (dis)connection
+
+- notify <login> .. <login>
+notify <login %s> <num %d> : <login %s> ..
+<end>
+
+- notify +|- <login> .. <login>
+<end>
+
+
+- ignore
+: [on]ignore[off] <no %d> : <ignoree %s>(<ignorers %d>) ..
+<end>
+
+- ignore +|-
+- ignore %
+<end>
+
+- ignore <login> .. <login>
+: [on]ignore[off] <login %s> <no %d> : <ignoree %s>(<ignorers %d>) ..
+<end>
+
+- ignore +|- <login> .. <login>
+<end>
+
+
+- help 
+: [on]help[off] help
+<end>
+
+- help <file> .. <file>
+: [on]help[off] <file %s>
+<end>
+
+
+- name  <login> [name]
+- email <login> [email]
+<end>
+
+
+// system commands
+
+- uptime
+: [on]uptime[off]
+Compiled    : <date %s>
+Current     : <date %s>
+On-line     : <date %s> : <%7.3f> = <HHMMSS> / <HHMMSS>
+Rebooted    : <date %s> : <HHMMSS>
+Connections : <now %d> / <max %d> / <total %d>
+Inp [N/M/T] : <now %d> / <max %d> / <total %d>
+Out [N/M/T] : <now %d> / <max %d> / <total %d>
+IO  [%=C/D] : <ratio %7.3f> / <compressed %d> / <decompressed %d>
+DB  [%=C/D] : <ratio %7.3f> / <compressed %d> / <decompressed %d>
+FS [blocks] : <ratio %7.3f> / <free %d> / <total %d> x <size %d>
+FS [inodes] : <ratio %7.3f> / <free %d> / <total %d>
+RAM [%=F/T] : <ratio %7.3f> / <free %d> / <total %d>
+SWAP[%=F/T] : <ratio %7.3f> / <free %d> / <total %d>
+<end>
+
+
+- salias
+: [on]alias[off] <no int %d>
+{x=1..no}<name string %-8s> <definition string %s>
+
+- salias ?<prefix>
+: [on]alias[off]
+{x=0..?}<name string %-8s> <definition string %s>
+
+- salias <name>
+- salias <name> <definition>
+<null>
+
+
+- shistory
+: [on]system history[off] <len %d>
+{x=1..len}<dsiconnect %s> <online HHMMSS> <login %s %-8s> [@ <ipaddr %s> <hostanme %s>]
+<end>
+
+
+- down
+
+
+- mux
+: [on]mux[off] <no %d>
+{1..no}<mux %s> : <proto %s> <ipaddr %s> <hostname %s> #<fd %d>
+<end>
+
+- mux <host> <port>
+<end>
+
+-mux <host> <port> <compression>
+<end>
+

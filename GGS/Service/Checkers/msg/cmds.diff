@@ -1,0 +1,21 @@
+Syntax of /cks commands
+=======================
+
+is essentially equal to the /os syntax (tell /os help cmds).
+There are however differences in game specific details:
+
+Rating Types:
+
+<rtype> ::= <board>[R]         // R=random
+<board> ::= 6|8|10             // 6x6..10x10
+
+Game Types:
+
+<gtype> ::= <board>[K][R][B|W] // K=komi R=random setup
+<board> ::= 6|8|10             // B|W color preference
+                               // e.g: 10 8W 10B 6R 6KR
+
+play <.id> <move>                        // play a move in game <.id>
+<move>   ::= <coords>[/<eval>[/<time>]]  // e.g: B3-A1 C4-C5/10.3 H8-H6/5/4
+<coords> ::= <coor>-<coor>[-<coor>]*     // from-to-... e.g.: A1-C3-E5
+

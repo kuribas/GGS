@@ -1,0 +1,33 @@
+You can play on boards from 3x3 to 26x26 (even 3x26). Board is always
+oriented (normalized) so that height <= width.
+
+It implements:
+ - Ko       rule = no repetition of last position, and 
+ - Super-Ko rule = no repetition of any  position.
+Currently Super-Ko is switched on.
+
+It implements:
+ - Japanese scoring = territory + prisoners, and
+ - Chinese  scoring = territory + stones.
+Currently Japanese scoring is switched on.
+
+Due to so many board shapes and sizes:
+ - The komi system is left to players, e.g. tell /gs ask 19x19K <opp>,
+ and send the first move with the komi (for 19x19 this is 5.5 .. etc).
+
+ - The handicap system has not been implemented, yet.
+
+Rating system takes score into account - larger win will result in
+more points. Resign leads to maximal loss (size of the board), so do
+not do it :)
+
+Game starts in PLAY mode. After two consecutive passes (pa) game
+switches into MARK mode. In the MARK mode, you mark dead groups.
+Marked groups are shown in lower-case. You can unmark the group by
+marking it again. Only groups marked by both players are actually
+removed. After two consecutive passes (pa) game ends and is
+scored. Territory is shown in lower-case letters.
+
+Suggestions, comments, etc. to igord@research.nj.nec.com
+
+Igor

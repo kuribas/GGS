@@ -1,0 +1,82 @@
+Generic Game Server commands reference
+--------------------------------------
+
+- alias
+- alias !<user>
+- alias <name>
+- alias ?<prefix>
+- alias <name> <definition>
+- var
+- var !<user>
+- var <name>
+- var ?<prefix>
+- var <name> <definition>
+- bell (+|-)(t|tc|tg|n|ng|nc|ni|nn)
+- vt100 [+|-]
+- hear [+|-]
+- verbose (+|-)(news|ack|help|faq)
+- info
+- info <text>
+- passw <new> <old> [login]
+- who
+- finger
+- finger <login> .. <login>
+- history
+- history <login> .. <login>
+- echo [message]
+- tell <who>,..,<who> [message]; who = _group | .chann | login
+- : <command> [args]
+- repeat [sec [cmd]]
+- quit 
+- quit <login> [passw]
+- chann
+- chann ?
+- chann +|-
+- chann %
+- chann <chann> .. <chann>
+- chann +|- <chann> .. <chann>
+- group
+- group ?
+- group +|-
+- group <group> .. <group> 
+- group +|- <group> .. <group>
+- group <group> .. <group> +|- <login> .. <login>
+- notify
+- notify ?
+- notify +|-
+- notify %
+- notify [*] <login> .. <login>
+- notify +|- [*] <login> .. <login>
+- ignore
+- ignore ?
+- ignore +|-
+- ignore %
+- ignore <login> .. <login>
+- ignore +|- <login> .. <login>
+- help 
+- help <file> .. <file>
+- name <login> [name]
+- email <login> [email]
+- uptime
+- uptime -sys
+- salias
+- salias <name>
+- salias ?<prefix>
+- salias <name> <definition>
+- shistory
+- down
+- mux
+- mux <host> <port>
+- mux <host> <port> <compression>
+- pack
+- exec <user> <cmd>
+- tevent 
+- tstat
+- tstat +|-
+- trace 
+- trace [0,1,2]
+- stat_inp h|d|m|y
+- stat_out h|d|m|y
+- stat_user h|d|m|y
+
+12.Apr.2001 (c) Igor Durdanovic, igord@research.nj.nec.com

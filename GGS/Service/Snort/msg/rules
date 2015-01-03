@@ -1,0 +1,11 @@
+Amazons rules
+=============
+
+Each player has four amazons which can move like chess queens, except
+for capturing. Moves consist of moving an amazon to an empty square and
+throwing an arrow from the reached location in queen direction. Arrows stop
+before hitting other amazons or blocked squares. The empty square hit by the
+arrow is blocked - no amazon and arrow is allowed to pass it anymore. Loser
+is the first player without legal moves. His/her score then is computed as the
+negative number of squares reachable by the opponent.
+

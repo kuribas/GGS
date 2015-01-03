@@ -1,0 +1,199 @@
+Generic Game Server Global Aliases
+----------------------------------
+
+Alias mechanism
+---------------
+
+The following pseudo-code illustrates Alias expansion algorithm,
+variable substitution and argument passing. Assume a user has enetered
+command: <cmd> [arg].
+
+process( line ) 
+{ 
+  expand( line, 8, 3 ) 
+}
+
+expand( line, cmds, depth ) 
+{
+  def = get_alias( line.cmd );       // def is alias definition of cmd,
+  for i = 0 .. def.size()            // a ';' separated list of commnds
+    if ( cmds <= 0 ) break;          // max number of commands executed
+    pass_arg( def[i], command.arg ); // $0 .. $<n> will pass arg(uments)
+                                     // $ = all arguments, $- = shift 
+    if ( depth == 0 ) { execute( def[i] ); --cmds; }
+    else expand( def[i], cmds, depth - 1 )
+  end
+}
+
+execute( command )
+{
+  replace_var( command ); // replace all $<id> with their definitions
+  prefix( command );      // prefix command if not ":" or "tell"
+  apply( command.cmd, command.arg ); // and execute
+}
+
+To prevent abuse, aliases undergo at most 4 levels of expansion and at
+most 64 commands will be executed. Expansion will always be truncated
+if longer than 1024 chars.
+
+If you want to prevent expansion of $vars in commands/aliases use
+quote, i.e. '$var, same for '$args. (s)alias commands are quoting by
+default, additional quoting is only neccessary if alias defines an
+alias that will define an alias .. :)
+
+
+Predefined aliases
+------------------
+
+If you have a nice alias that an be useful for everybody, and is
+missing here, feel free to contribute it, i.e. tell any system
+administrator and he will consider its inclusion into the global set.
+
+If you don't like any of the global aliases you can redefine them
+locally. Or you can create locally a shorter version of global alias
+if you think alias name is too long. Or you can unalias global alias
+locally, i.e. "alias ts ts" will unalias global alias "ts".
+
+Aliases for GGS commands; capital letters are used for system
+commands, small letters for the rest.
+
+Note: aliases that start with "_" will not be saved. User can have at
+most 64 permanent aliases and no more then 128 permanent + temporary
+aliases.
+
+Aliases that replace system commands or influence them:
+
+A        salias  $
+H        shistory
+a        alias   $
+b	 bell    $
+c        chann   $
+f        finger  $
+g        group   $
+h        history $
+i        ignore  $
+m        mux     $
+p        v _pfix $
+n        notify  $
+q        quit    $
+r        repeat  $
+t        tell    $
+u        uptime
+v        var     $
+ve       verbose $
+w        who
+
+Note that aliases for commands that expect argumends have to have $.
+
+The "," alias can be used to replay to the sender (user/group/channel)
+of the last message you received:
+
+,        t $_recv $
+
+
+The "." alias is convenient for telling the last recepient another
+message:
+
+.        t $_last $
+
+The "ft" alias, or "fast tell" tells message to somebody preserving
+the old recepient:
+
+ft       v _tmp $_send ; t $ ; v _send $_tmp
+
+
+Aliases that (m)ake (s)service; i.e. "ms /os" will define your private
+variable _service to be /os. Below you will find many aliases that make
+use of varibale _service to access the right service:
+
+ms       v _service $
+msa      v _service /ams
+msck     v _service /cks
+mso      v _service /os
+
+
+Alias that (s)ets (m)atch id; i.e. normal people play only one game
+at a time, so it is useful to reuse this information by setting a
+variable to it:
+
+sm       v _match $
+
+
+Alias that (s)ets (t)ype of the game; you can choose a particular game
+type and reuse this information by setting a variable to it:
+
+st       v _type $
+
+
+Alias that (t)ells (s)ervice a command; first you have to use ms, msa,
+mso, to set the _service alias on the service of your choice:
+
+ts       t $_service $
+
+
+Aliases that somewhat mimic behavior of old IOS; many of them make use
+of _type and _match variables, you have to set them first!
+
+tfa      ts aform $           // (f)ormula auto-(a)ccept
+tfd      ts dform $           // (f)ormula auto-(d)ecline
+ta       ts ask   $           // (a)ask for a match
+td       ts decline $         // (d)ecline match
+tac      ts accept  $         // (ac)cept a match
+tat      ts assess $_type $   // (a)ssess (t)ype
+twt      ts who    $_type $   // (w)who    (t)ype
+trt      ts rank   $_type $   // (r)ank    (t)ype
+ttt      ts top    $_type $   // (t)op     (t)ype
+tpm      ts play   $_match $  // (p)lay    (m)atch
+kim      ts tell   $_match $  // (ki)bitz  (m)atch
+wim      ts tell o $_match $  // (wi)sper  (m)atch -- whisper
+tmm      ts moves  $_match $  // (m)oves   (m)atch
+tm       ts match $           // (ma)tch list 
+to       ts watch $           // (o)observe
+to+      ts watch + $
+to-      ts watch - $
+
+
+For every _type and _match parametrized alias there is also a
+non-parametrized version:
+
+tw       ts who   $           // (w)who
+tp       ts play  $           // (p)lay
+tr       ts rank  $           // (r)ank 
+tt       ts top   $           // (t)op
+ki       ts tell a $          // (ki)bitz
+wi       ts tell o $          // (wi)sper -- whisper
+tmo      ts moves  $          // (mo)ves
+
+
+Statistic shortcuts:
+
+sti      stat_inp $
+sto      stat_out $
+stu      stat_user $
+
+
+Predefined variables
+--------------------
+
+_recv // contains the sender of last message you received,
+      // unless sender was a service. If last message was 
+      // received through a channel or a group, it will
+      // be set to the channel or the group instead.
+      // this variable is used by "," (replay) alias
+
+_send // contains the recepient(s) of your last message
+
+_pfix // content of this variable will prefix EVERY command,
+      // except ":" and "tell"
+      // semantic of ";" is disabled in prefix expansion.
+
+_rsec // holds repetition time for the repeat command
+_rcmd // holds command that is to be repeated
+
+_ready // this variable will replace "READY\" prompt
+_alert // this variable will replace "ALERT\" prompt
+
+
+Note: /Services have their own set of aliases! getfamiliar with them.
+
+12.Apr.2001 (c) Igor Durdanovic, igord@research.nj.nec.com

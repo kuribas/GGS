@@ -1,0 +1,19 @@
+Chess Service Server help files
+
+-----------+----------------------------------------
+file       | description
+-----------+----------------------------------------
+clock        Clock specification.
+cmds         A list of all commands
+format       Format of messages, parsing specification (outdated)
+formula      Formulas for auto accept/decline
+help         This file
+rating       Rating system description
+rules        http://external.nj.nec.com/homepages/mic/ggsa/cs.rules
+types        http://external.nj.nec.com/homepages/mic/ggsa/cs.types
+
+To access a help file type "tell /cs help <file>".
+ 
+Full Docs: http://external.nj.nec.com/homepages/igord/gsa-ggs.htm
+Mic's GGSApplet: http://www.neci.nj.nec.com/homepages/mic/ggsa
+

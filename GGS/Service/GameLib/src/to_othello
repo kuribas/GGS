@@ -1,0 +1,1 @@
+rsync -aczvr -e ssh . othello:GGS/Service/GameLib/.src/

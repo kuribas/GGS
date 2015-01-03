@@ -1,0 +1,92 @@
+Game Service Rating System
+--------------------------
+
+Game Service uses Mark Glickman's rating system. For more information
+go to http://math.bu.edu/INDIVIDUAL/mg/research.html.
+
+Major improvemnt in the rating system comes from player's rating being
+defined as a pair (Estimated_Rating, Rating_Deviation) or R@D.
+
+Rating_Deviation expresses the accuracy of the Estimated_Rating.
+
+New players start as 1720@350 and as they play other players their
+estimated rating and its accuracy changes. 
+
+The following function calculates updates of ratings for player1 and
+player2 with respect to the outcome NResult. The outcome w is from
+first player's point of view: 0.0 for a loss, 0.5 for a draw, and 1.0
+for a win.
+
+void Rating::rate( real8 NResult, real8& r1, real8& d1, real8& r2, real8& d2 )
+{
+  const real8 p = 0.00001007241561756780; // 3*ln(10)^2/(pi^2*400^2)
+  const real8 q = 0.00575646273248511421; //   ln(10)/400
+  const real8 min_K = 16.0;
+    
+  real8 d12 = r1 - r2;
+  real8 sd1 = d1 * d1;
+  real8 sd2 = d2 * d2;
+
+  {
+    real8 f = 1.0 / sqrt( 1 + p * sd2 );
+    real8 E = 1.0 / ( 1.0 + pow( 10.0, -d12 * f / 400.0 ) );
+    real8 k = 1.0 / sd1 + q*q * f*f * E * (1.0 - E);
+    real8 K = q*f / k;
+    if ( K < min_K ) K = min_K;
+    r1 = r1 + 2 * K * ( NResult - E );
+    d1 = 1.0 / sqrt( k );
+  }
+  NResult = 1.0 - NResult; // invert result
+  {
+    real8 f = 1.0 / sqrt( 1 + p * sd1 );
+    real8 E = 1.0 / ( 1.0 + pow( 10.0, d12 * f / 400.0 ) );
+    real8 k = 1.0 / sd2 + q*q * f*f * E * (1.0 - E);
+    real8 K = q*f / k;
+    if ( K < min_K ) K = min_K;
+    r2 = r2 + 2 * K * ( NResult - E );
+    d2 = 1.0 / sqrt( k );
+  }
+}
+
+
+
+The inaccuracy of one's rating increases with inactivity. The following function
+calculates new rating deviation with respect to the length of inactivity period:
+
+real8 Rating::Rdev( real8 rdev, sint4 last, sint4 now )
+{
+  static const real8 t_rdev = 100.0;                   // additional rating deviation
+  static const real8 t_norm = 60.0 * 60.0 * 24.0 * 30; // time unit
+  static const real8 t_year = 12.0;                    // period = 12 * time_unit
+  static const real8 c      = t_rdev * t_rdev / log( 1.0 + t_year );
+  /*        */ real8 t      = now < last ? 0 : now - last;
+  
+  real8 tdev = sqrt( rdev * rdev + c * log( 1.0 + t / t_norm ) );
+  return tdev > 350.0 ? 350.0 : tdev;
+}
+
+
+Game Service will always display current Estimated_Rating @
+Rating_Deviation, but will (re)sort the players in the top list
+hourly. For sorting purposes low estimation for players rating er@rd
+is used, i.e.  er - rd * 1720 / 350.
+
+
+
+Smoothing the loss-draw-win transition!
+
+Combined with a fractional komi system, Game score becomes a continous
+function for many games! The following function is used to maps score
+into (0.0, 1.0) outcome expected by the rating update function:
+
+real8 Match::score( real8 r )
+{
+  const real8 K = 0.75; // +2 -> 0.8, -2 -> 0.2
+
+  real8 a = fabs(r);
+  
+  return 0.5 + r * K * 0.5 / ( 1.0 + a * K  );
+}
+
+
+22.Nov.1999 (c) Igor Durdanovic, igord@research.nj.nec.com

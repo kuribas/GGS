@@ -1,0 +1,41 @@
+# $Id: README 9037 2010-07-06 04:05:44Z mburo $
+
+This is the GGS software collection.
+
+
+After "cvs co GGS" do 
+
+  bin/apply-links
+
+This generates all necessary links
+
+
+After changing links you should run
+
+  bin/gen-links
+
+This generates file bin/apply-links
+(don't forget to check in this file then)
+
+To compile you need to set GCCHOME to the home directory of gcc
+(e.g. /usr/local/gcc) in your shell.
+
+Then issue 
+
+  make dir
+
+(only once)
+
+followed by
+
+  make all
+
+
+Please send bug reports and suggestions to
+
+  Michael Buro  mburo@cs.ualberta.ca
+
+or 
+
+  Igor Durdanovic idurdanovic@comcast.net
+

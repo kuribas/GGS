@@ -1,0 +1,24 @@
+Ataxx Server help file(s)
+
+-----------+----------------------------------------
+file       | description
+-----------+----------------------------------------
+rules        Rules of the Game
+types        Types of the Game
+
+To access a help file type "tell /ax help <file>".
+ 
+The other help files are identical to for example Othello.
+
+cmds         A list of all commands
+format       Format of messages, parsing specification (outdated)
+formula      Formulas for auto accept/decline
+help         This file
+rating       Rating system description
+types        Supported variants
+
+You can access them by issuing "tell /os help <file>".
+
+Full Docs: http://external.nj.nec.com/homepages/igord/gsa-ggs.htm
+Mic's GGSApplet: http://www.neci.nj.nec.com/homepages/mic/ggsa
+ 

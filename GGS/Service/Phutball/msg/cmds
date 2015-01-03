@@ -1,0 +1,106 @@
+Game Service commands reference
+-------------------------------
+- + <player> <level>
+- - <player>
+- top <type>
+- top <type> <num>
+- top <type> <from> <num>
+- rank <type>
+- rank <type> <player>
+- who <type>
+- who <type> a
+- who <type> -pts +pts
+- who <type> a -pts +pts
+- finger
+- finger <player> .. <player>
+- group
+- group ?
+- group <group> .. <group> 
+- group +|- <group> .. <group>
+- group <group> .. <group> +|- <login> .. <login>
+- assess <.match> <score>
+- assess <type|*> <player> <score>
+- assess <type|*> <player> <player> <score>
+- tdtype  <td.id> <match.type>
+- tdstart <td.id> <.stored>
+- tdstart <td.id> <type> <player1> <time1> <player2> <time2>
+- ask <.stored>
+- ask <type> [your-time [opp-time]] <opponent>; time in HH:MM:SS
+- ask <type> [your-time [opp-time]], time in HH:MM:SS
+- accept <.request>
+- decline <.request>|<player> .. <.request>|<player>
+- cancel <.id>|<player> .. <.id>|<player>
+- aform <formula>
+- dform <formula>
+- play [.match] <move>
+- undo [.match]
+- abort [.match]
+- break [.match]
+- score [.match] <result>
+- resign [.match]
+- moves [.match]
+- tell   <.match> <mssg>
+- tell p <.match> <mssg>
+- tell o <.match> <mssg>
+- history
+- history <player> .. <player>
+- stored
+- stored +|-
+- stored <player> .. <player>
+- look <.stored>
+- help 
+- help <file> .. <file>
+- open <num>
+- client +|-
+- bell (+|-)(r|p|w|n|ns|nn|nt|ni|nr|nw|ta|to|tp)
+- vt100 [+|-]
+- hear [+|-]
+- trust [+|-]
+- rated [+|-]
+- request
+- request +|-
+- request <player>|<.request> .. <player>|<.request>
+- match
+- match <player>|<.match> .. <player>|<.match>
+- watch
+- watch ?
+- watch +|-
+- watch %
+- watch <.match> .. <.match>
+- watch +|- <.match> .. <.match]
+- ignore
+- ignore ?
+- ignore +|-
+- ignore %
+- ignore <player> .. <player>
+- ignore +|- <player> .. <player>
+- notify
+- notify ?
+- notify +|-
+- notify % 
+- notify [*] <player> .. <player> 
+- notify +|- [*] <player> .. <player>
+- track
+- track ?
+- track +|-
+- track %
+- track [*] <player> .. <player> 
+- track +|- [*] <player> .. <player>
+- uptime
+- uptime -sys
+- salias
+- salias <name>
+- salias ?<prefix>
+- salias <name> <definition>
+- shistory
+- pack
+- tevent 
+- tstat
+- tstat +|-
+- stat_inp h|d|m|y
+- stat_out h|d|m|y
+- stat_user h|d|m|y
+- stat_request h|d|m|y
+- stat_match h|d|m|y
+
+12.Apr.2001 (c) Igor Durdanovic, igord@research.nj.nec.com

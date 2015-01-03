@@ -1,0 +1,194 @@
+The First Jenazon Cup
+Arbitrary Human+Computer Teams 
+in Amazons
+
+Announcement   -   First Call
+
+
+Prof. Dr. Ingo Althofer
+Faculty of Mathematics and Computer Science
+Friedrich-Schiller-Universitat Jena
+07740 Jena  -  Germany
+
+Email:  althofer@mipool.uni-jena.de
+
+
+Philosophy
+There are brain games where top human players and top computer 
+programs are approximately equal in playing strength. Currently 
+Chess, Scrabble, Backgammon, and perhaps also Amazons belong 
+to this class. In these games human-computer combinations may 
+be strong teams, when skills of man and machine are brought 
+together in a synergetic way. In the chess community special 
+events with human+computer teams already have some tradition, 
+see 
+
+ www.AdvancedChessLeon.com 
+
+for matches in "Advanced Chess"  or my webpage 
+
+ www.minet.uni-jena.de/www/fakultaet/iam/personen/althofer_e.html
+
+for the "3-Hirn" approach.
+
+Human+Computer in Amazons: The Jenazon Cup
+To learn about the potential of human+computer in Amazons, I 
+want to run the first Jenazon Cup. In this contest each 
+participant is a team with arbitrary members and arbitrary 
+decision structure. So, any combination of humans, programs, 
+and computers will be accepted and may choose freely its ways 
+to achieve decisions. 
+For instance, the playing team may consist of
+
+(a) a single human player,   or
+(b) a group of human players,   or
+(c) a single computer program,   or
+(d) a single human assisted by one or several computer programs, or
+(e) a group of humans assisted by one or several computer programs, or
+(f) three computer programs acting in a majority setting.
+
+An important external limitation is that games in the Jenazon Cup 
+will have to be played in realtime via internet.
+
+Each team has to include at least one human, the team leader. This 
+person may be involved in the decision processes or only be operating. 
+Team leaders are not allowed to participate in more than one team. 
+Copies of the same Amazons computer program may be used in more 
+than one team. 
+
+All participants shall reveal their team and decision structures 
+after the tournament.
+
+Amazons
+In the Jenazon Cup, Amazons is played on a 10x10 board with the 
+standard starting position for the amazons. An introduction to 
+this game may be found for instance on the webpage of Theo Tegos:
+
+     www.cs.ualberta.ca/~tegos/amazons/index.html
+
+Number of Participants in the Jenazon Cup
+If seven or less teams participate, a round-robin tournament will 
+be played. If the number of participating teams is between eight 
+and sixteen, there will be preliminary groups and a final with 
+four teams. For each pairing (only) one game is played, with komi 
+bidding in the beginning. Details on "komi bidding" are explained 
+below. Each participant will have to play at most seven games in 
+the whole competition.
+
+At most 16 teams will be admitted. If more than 16 teams apply 
+the organizer decides which teams to accept. My intention is to 
+make the event as high-calibre as possible. Applicants with good 
+explanations why their team should be strong and/or interesting 
+have better chances to be admitted. Also, teams with early 
+registration have better chances to be accepted.
+
+Komi in the Jenazon Cup
+In Amazons the player with the first move has some advantage. It 
+is fair to level this by the introduction of "komi".  
+A priori the technical meaning of komi is not completely clear. 
+Here comes the definition of komi for the Jenazon Cup: 
+
+Let the pairing be player A versus player B, with A making the 
+first move, and komi=k, where k is a non-negative integer.
+CASE 1: At some moment in the game A is to move but has no more 
+        legal move on the board. Then B is declared the winner.
+CASE 2: At some moment in the game B is to move but has no more 
+        legal move on the board.
+   SUBcase 2a: k=0. Then A is declared the winner.
+   SUBcase 2b: In this position Player A is able to give a sequence 
+               of k successive legal moves for his side. Then A is 
+               declared the winner. (In the Jenazon Cup team A has 
+               to give the sequence of k successive moves 
+               within its thinking time.)
+   SUBcase 2c: In this position Player A is not able to give a 
+               sequence of k successive legal moves for his side. 
+               Then B is declared the winner.
+
+Komi Bidding 
+Currently the best komi-value for Amazons is not known. Therefore, 
+in the Jenazon Cup in the beginning of each single game komi is 
+determined by a bidding procedure.
+Alternatingly the two teams call non-negative integers in increasing 
+order. The first-mentioned team (in the pairing) has to make a first 
+bid ("zero" is explicitely allowed). Finally one of the teams passes 
+(or calls a non-increasing integer). This passing team has to play 
+the second move, and the komi is defined to be the highest number 
+called in this bidding procedure.
+
+Example for the pairing A-B:
+A calls 6, B calls 8, A calls 9, B passes. Then komi=9, and A has 
+to play the first move.
+
+
+Winners and Tie-Breaking Rules
+In each single game there will be a winner, due to the komi bidding 
+rules. Draws are not possible. In a group (preliminary or final) the 
+team with the most wins will be the group winner. In case of two or 
+more teams with the same number of wins the tie will be broken by a 
+coin flipped by the referee. (See also at "price money".)
+
+Date
+The Cup will start at the beginning of November 2001. For each pairing 
+both teams involved have to agree on a date for the game. This date 
+has to be confirmed by the referee. If no agreement is found, the 
+referee fixes a date.
+The whole event is to be finished well before Christmas 2001.
+
+Thinking time will be 90 minutes per team for the whole game in 
+preliminary rounds, and 120 minutes in the finals. A team has to 
+arrange all internal decisions during its thinking time. Clocks will 
+be run by the internet server.
+
+Venue of Play
+Games are to be played on a game server in the internet, probably 
+on GGS. For information on GGS, see
+
+     www.neci.nj.nec.com/homepages/mic/ggsa/ggsa.html
+
+Registration
+Registration is possible from now on, at the Email address   
+althofer@mipool.uni-jena.de   . Teams from all over the world are 
+invited. Only human team leaders are allowed to register. Registration 
+deadline is 30 September, 2001. Only under exceptional circumstances 
+later registrations will be accepted. Applicants will be informed 
+immediately after registration and again early in October 2001.
+The pairings for the (preliminary) group(s) will be made when all 
+participants are known.
+
+Starting Fee
+There is no starting fee. Application and participation are free.
+
+Price Money
+One thousand Euro are given to the winning team.
+In case of disputes and reclamation the referee is the only authority. 
+Legal actions are excluded (in German language: "Der Rechtsweg ist 
+ausgeschlossen.").
+
+In case of a tie-break situation the price money will be split in 
+equal parts. If there is a tie in a preliminary group, this group 
+winner (determined by coin flip) will have to share its eventual 
+price money with the tie-partners.
+An extreme example: In a preliminary group the teams A1, A2, A3 
+share the first place, and A1 wins the tie. In the final A1 again 
+shares the win with two other teams. Then each of the teams A1, 
+A2, and A3 get 111 Euro (= 1/3 * 1/3 * 1000).
+
+Referee
+This is me, Ingo Althofer. Independent volunteers are invited to 
+support; please, offer me your help.
+After each game both parties independently have to send a file with 
+the komi bidding, the moves and the result to the referee.
+
+Proposals and questions are welcome to: althofer@mipool.uni-jena.de
+
+
+Looking forward to an intriguing Jenazon Cup with many ideas on 
+human+computer teams,    Ingo Althofer.
+
+PS: Please, send your Email always to althofer@mipool.uni-jena.de 
+even if you sometimes get my replies from other accounts. Please, 
+spread the announcement. This announcement will also be sent to 
+the ICGA Journal for publication;
+and you will find it (soon) on my webpage  
+www.minet.uni-jena.de/www/fakultaet/iam/personen/althofer_e.html
+A second Jenazon Cup is intended for November 2002.

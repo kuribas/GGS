@@ -1,0 +1,59 @@
+/td: rankings: tournament 1
+ 6.0 ( 6  0  2)   piglet [0.5308]
+ 5.5 ( 5  1  2)    kitty [0.4813]
+ 5.0 ( 5  0  3)      Fox [0.5354]
+ 5.0 ( 5  0  0)     edax [0.5070]
+ 5.0 ( 5  0  3)      vo+ [0.5010]
+ 4.0 ( 4  0  4)     lynx [0.5581]
+ 2.5 ( 2  1  5)  nemtest [0.4769]
+ 2.0 ( 2  0  6)  unicorn [0.5281]
+ 1.0 ( 1  0  7)     hawk [0.4896]
+ 1.0 ( 1  0  4)      ant [0.3312]
+
+
+/td: st: schedule for tournament 1:
+---  round 1  ---
+1.1  nemtest vs piglet  -9
+1.2  hawk vs vo+  -10
+1.3  unicorn vs kitty  -7
+1.4  lynx vs Fox  -3
+---  round 2  ---
+2.1  piglet vs vo+  2
+2.2  Fox vs kitty  -4
+2.3  unicorn vs lynx  -9
+2.4  hawk vs nemtest  -5
+---  round 3  ---
+3.1  kitty vs piglet  -2
+3.2  vo+ vs Fox  -1
+3.3  lynx vs nemtest  4
+3.4  hawk vs unicorn  -64
+---  round 4  ---
+4.1  Fox vs piglet  -13
+4.2  kitty vs lynx  -3
+4.3  vo+ vs unicorn  22
+4.4  nemtest vs ant  -9
+4.5  edax vs hawk  17
+---  round 5  ---
+5.1  piglet vs lynx  -1
+5.2  nemtest vs Fox  -6
+5.3  vo+ vs kitty  -1
+5.4  unicorn vs edax  -14
+5.5  ant vs hawk  -54
+---  round 6  ---
+6.1  piglet vs edax  -4
+6.2  lynx vs vo+  -2
+6.3  kitty vs nemtest  0
+6.4  Fox vs hawk  12
+6.5  ant vs unicorn  -38
+---  round 7  ---
+7.1  unicorn vs piglet  -9
+7.2  edax vs lynx  4
+7.3  Fox vs ant  44
+7.4  hawk vs kitty  -8
+7.5  nemtest vs vo+  -3
+---  round 8  ---
+8.1  piglet vs hawk  17
+8.2  edax vs Fox  2
+8.3  kitty vs ant  25
+8.4  vo+ vs lynx  1
+8.5  nemtest vs unicorn  9

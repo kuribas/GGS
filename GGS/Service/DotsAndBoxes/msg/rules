@@ -1,0 +1,10 @@
+Dots-And-Boxes rules
+====================
+
+D+B is played on the edges of a 2D grid graph. Players move
+alternately by placing new edges. In case a new edge completely
+surrounds a face ("box") the face is marked with the player's color
+and the player has to move again, otherwise the opponent is to
+move. The game ends when all edges are occupied. The score is the box
+differential.
+

@@ -1,0 +1,2 @@
+
+rsync -aczvr -e ssh . borg9:/home/igord/GGS/Service/Othello/.src

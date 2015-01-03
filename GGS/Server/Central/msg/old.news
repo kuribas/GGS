@@ -1,0 +1,253 @@
+Old News
+
+28/Oct/1999 New Amazon service /ams. For rules & regulations
+            do "tell /ams help" ;-)  /ams uses the same commands as /os
+            "help vc.alias" will explain how System aliases work.
+29/Oct/1999 VCA now can handle Amazons games as well
+02/Nov/1999 Only admins can talk to <_group>, everybody else please use .chat
+06/Nov/1999 New (generic) C++ client at
+            http://www.neci.nj.nec.com/homepages/mic/vca/
+            VCA improved (new options & much better Amazons handling)
+09/Nov/1999 Checkers service (/cks) functional. VCA upgraded for handling 
+            Checkers.
+12/Nov/1999 VC has been renamed into GGS - Generic Game Server :)
+            Some internal restructuring performed to get things under 
+            control.
+            VCA has been improved again and renamed to GGSA.
+            No need to supply <.id> if you are playing only one game. 
+15/Nov/1999 Games are available in ftp://ftp.nj.nec.com/pub/igord/GGS/
+18/Nov/1999 Added number of "stored" games in formula.
+21/Nov/1999 GSA/GGS Documentation is coming .. slowly :)
+            http://external.nj.nec.com/homepages/igord/gsa-ggs.htm
+22/Nov/1999 GGSA improved text output speed + new "Print SGF" menu item.
+ 1/Dec/2000
+    - SSL port 5006 is available: (help ssl)
+03/Dec/1999 
+  Changes in the Central Server:
+    - Aliases and Variables that start with "_" will not be saved.
+    - " ; " is treated as command separator within alias/var expansion.
+    - special variables (i.e. used by GGS commands):
+      "__send"  - to whom you sent last message (".")
+      "__recv"  - from whom you received last message (",")
+      "__pfix"  - prefix for all commands, ":" is escape.
+      "__rsec"  - interval [sec] for repeating command ("repeat")
+      "__rcmd"  - command that is to be repeated ("repeat")
+    - "prefix", ".", "," commands have been redefined as system aliases.
+    - new command "repeat [sec [cmd]]".
+    - System Aliases are rewritten.
+    - Alias and variable names restricted to visible characters.	
+    - "mode <n>" replaced with "verbose <n>", 
+      0 = nothing, 1 - news, 2 = ack for every command, 3 = help, 4 = faq.
+  Changes in Services:
+    - "mode <n>" is replaced by "client [+|-]"
+    - extended command "stored [+|-] | [login .. login]" 
+      if you want to be notified when a player with whom you have a 
+      saved game logs in.
+03/Dec/1999 
+  Logistello's book skeleton is available at
+  http://www.neci.nj.nec.com/homepages/mic/log.html
+04/Dec/1999
+  Changes in Central Server:
+    - alias !<user> - will list <user> aliases
+    - var   !<user> - will list <user> variables
+    - chann, group, ignore, notify have new parameter "?"
+  Changes in Services:
+    - ignore, notify, watch, track have new parameter "?"
+07/Dec/1999
+    - introduced "execute as a user" command .. too many people managed to 
+      shoot themselves in the foot with all the power of GGS ..
+    - greatly extended bell control for the Central Server & Services.
+    - when using prefix, aliases are expanded BEFORE prefix is applied.
+18/Dec/1999
+    - Alias, Var, Arg mechanism is completely rewriten .. help alias.
+    - improved verbose control.
+19/Dec/1999
+    - Service state is now asynchronously saved once every 10 min.
+20/Dec/1999
+    - GGSA improved: "Paste GGF" allows you to paste an sgf text
+      into the main-window input area, to replay or edit a game
+      locally.
+21/Dec/1999
+    - GGSA source available: http://www.neci.nj.nec.com/homepages/mic/ggsa
+    - Complete sources are available: ftp://ftp.nj.nec.com/pub/igord/GGS/SRC/
+24/Dec/1999
+    - found a bug in rating formula .. databases had to be rebuilt.
+    - '-', '0', '1', ... cannot be used as variable names, they shift/refer to args.
+    - alias substitution level increased to 4.
+02/Jan/2000
+    - max string limit (1024) is now in place during alias/var/arg expansion
+06/Jan/2000
+    - amsbot dit it: it won 7 of 8 games against the best four Japanese
+      Amazons programs. It lost only to Yamazon by -1 and won the return
+      game by 7. Check out http://www.cs.inf.shizuoka.ac.jp/~cs6501/amazon.
+28/Jan/2000
+    - new trust mode: wallclock is used if times differ by more than 4 secs
+    - new date GGF format: "yyyy-mm-dd hh:mm zone"
+27/Feb/2000
+    - Some pictures: http://external.nj.nec.com/homepages/igord/cats.htm
+28/Mar/2000 On Nicolet's request:
+    - Full quoting (') mechanism in place for $vars and $args
+    - (s)alias commands quote var/args by default, for the rest use '$var/arg.
+    - up to 64 commands can now be executed during alias expansion(s).
+19/Apr/2000 Othello Server has comleted first 10K games!
+12/Sept/2000
+    - synchro mode is now supported! spread the word.
+      I have also updated the applet and the C++ client.
+      Details are on my web page http://www.neci.nj.nec.com/homepages/mic
+27/Sept/2000
+    - GGSA improved, more stable now
+    - Lion - Chris Welty's new Windows /os client
+29/Sept/2000
+    - /go is a Go server, tell /go help.
+30/Sept/2000
+    - Roll your own GGS game service (address below)
+5/Oct/2000
+    - /cs is a chess server. GGSA supports it.
+6/Oct/2000
+    - new online help. try "t /cs help"
+17/Oct/2000
+    - improved GGSA game/user lists and talk contexts.
+    - GGSA documentation updated
+18/Oct/2000
+    - GGSA supports Go, new /hex server
+3/Nov/2000
+    - GGSA supports Hex and is *much* more stable now
+22/Jan/2001
+    - GGS /services are consistent now; GUI & Client writers:
+      new syntax for begin/end of match,
+      new clock (with new syntax and functionalities),
+      new formula syntax (for handling new clock),
+      all stored games on /ams, /cks, /cs, /os have been deleted.
+27/Jan/2001
+    - piglet is back. It only plays random synchro games
+21/Mar/2001
+    - alias .log_off will be executed when leaving GGS
+    - alias .log_on (former .ggsrc) will be executed when entering GGS.
+23/Mar/2001
+    - extension: assess * [login1] <login2> <score> 
+      will do assess for all game types known to login1 & login2.
+30/Mar/2001
+    - GGF DT[] format changed to YYYY.MM.DD_HH:MM:SS.Zone
+ 9/Apr/2001
+    - new (statistic) commands: stat_inp, stat_out, stat_user
+      and for services also stat_match, stat_request <h|d|m|y>
+      aliases: sti, sto, stu, stm, str
+12/Apr/2001
+    - /services have groups now, in particular _td group.
+    - /services have new command: tdstart
+13/Apr/2001
+    - /services support ghost player concept for tournaments (help ghost)
+    - rating lists were not scheduled for resorting - bug corrected
+    - bogus rating lists purged - the missing data corrupted DBs
+    - DB records now have tags for corruption checking
+    - all DBs restored from backups and reformated with tags
+    - (dis)connect messages augmented with admin level: +|- <player> <level>
+    - documentation (help & www) updated.
+
+18/Apr/2001
+    - new /service commands: tdtype <td.id> <match.type>, tdabort <match.id>, 
+      tdbreak <match.id>; break & abort do not work on tournament games.
+    - new /service command: continue - will search stored games for one that
+      can be continued and will start match.
+
+-- Formula remark: You have to check if the request is for a saved match first!
+   If the request is for a saved match, the rest of the request is not defined!
+   (have a look at kitty/lynx for example ...)
+
+ 2/May/2001
+    - For info about upcoming Amazons tournament t /ams help Jenazon
+
+23/Aug/2001
+    - Machine where GGS is running had some upgrades this week. The new
+    setup is causing some kind of timing bug, threfore do not play rated
+    games till further notice. We have to wait for Mic ..
+28/Aug/2001
+    - strange timing bug has disappeared ?!
+1/Oct/2001
+    - improved Amazons service: 
+      * Server does not score games automagically anymore. Instead it 
+        suggests scores which the players can accept using the score cmd
+      * Symmetrical random positions to decrease average color bias
+    - GGSA updated    
+
+1/Nov/2001
+    - new game service: Dots-And-Boxes (/db)
+    - GGSA supports D+B
+4/Nov/2001
+    - GGSA improved. No more "polygon circles" and missed mouse clicks
+      under Windows. Works great using SUN's JRE 1.3.1_01. 
+    - GGSA documentation updated.
+
+14/Dec/2001
+    - GGSA bug fixed (empty game window input caused exception)
+
+30/Nov/2001
+    - Call for participation: "First GGS Random Amazons Tournament"
+      "help atour"
+12/Dec/2001
+    - Call for participation: "Open Synchro-Random Othello Tournament"
+      "help otour"
+7/Jan/2002
+    - Welty's TD & GDK can now be compiled within GGS source tree:
+      ftp://ftp.nj.nec.com/pub/igord/GGS/source/
+      For Window's version you better get original sources:
+      http://www.btinternet.com/~chris.welty/
+10/Jan/2002
+    - /os should be bug-free now, feel free to crash it :)
+    - due to new clock all history/stored games had to be removed.
+    - exporting games to ftp works again.
+14/Jan/2002
+    - GGSA now displays the observer list in the game window.
+      It also signals observer arrivals/departures and displays
+      rating updates in that window (version 14-1-2002).
+23/Jan/2002
+    - GGS was down due to firewall maintenance.
+
+11/Mar/2002
+    - ORTS - an Open Real-Time-Strategy Game Toolkit has been released
+      (http://ftp.nj.nec.com/homepages/mic). It has an GGS interface
+      and compiles using g++3.0.3 under Linux/x86. Feedback welcome! 
+      And yes - I will work on the documentation ... /mic
+16/Mar/2002
+    - Open Othello tournament at 10am EST (GGS time)
+      http://www.btinternet.com/~chris.welty/Tournaments/Schedule.htm
+    - results: help tr
+ 7/Apr/2002
+    - Marc Tastet directing tournament at 12:00 GMT 
+      http://www.btinternet.com/~chris.welty/Tournaments/Schedule.htm
+24/May/2002
+    - GGS & Welty's code can now be compiled with gcc 3.1 
+      (Chris, you better get this version, strstreams are gone)
+    - old DB code was incompatible with sstream .. restored yesterday's DBs
+
+5/June/2002
+    The next GGS Tournament will be th 22nd June. 8x8 Synchro-Rand,
+    open to all.  More information on
+    http://www.btinternet.com/~chris.welty/Tournaments/2002_06_22.htm
+    RogerH will be directing the tournament.
+
+09/Aug/2002
+    Mux protocol extended with commands; Mux has to answer an internal
+    ping (every 2 min within 15 sec or be killed).
+
+28/Aug/2002    New Service /dm - Domineering, written by dan.
+05/Sep/2002    GGSA now supports /dm.
+11/Sep/2002    New Service /ax - Ataxx with GGSA support.
+09/Nov/2002    Tournament schedule suggestion (unic) -> help tours
+13/Nov/2002    GGS moved to the University of Alberta:
+               opal.cs.ualberta.ca 5000/1/2 or 4000/1/2, SSL at 5006
+16/Nov/2002    ftp.nj.nec.com has become unreliable. I suggest using
+               opal.cs.ualberta.ca instead. /mic
+3/Dec/2002     opal's power supply died. Perhaps the quiet fan I put
+               in was not strong enough? ;-)
+25/Dec/2002    Happy Holidays, everyone!
+2/Mar/2003     After setting the max. # of stored games from 16 to 64
+               /os crashes regularly. We are investigating ...
+20/Mar/2003    Tournament URL http://digilander.libero.it/romanbe
+7/Apr/2003     The Logistello pets are ignoring
+                  bosco danny BotTest breversi kw bot_test btest bothello 
+                  danny eric tom macro eric
+               which all originate from 061.015.*.* and seem to tamper
+               with /os's ratings. "help tamper" for some data
+1/Dec/2003     GGS was down for more than 24 hours. 
+               opal's video card passed away :-(

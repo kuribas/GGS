@@ -1,0 +1,26 @@
+Graphical User Interface & Other Clients
+----------------------------------------
+
+* GGSA - A Java Applet for all games by Michael Buro:
+  http://www.cs.ualberta.ca/~mburo/
+
+* LION - Windows .exe, Othello only by Chris Welty:
+  http://www.btinternet.com/~chris.welty/Tournaments/GGS.htm
+
+* There are several C++ clients that can be found:
+  http://www.cs.ualberta.ca/~mburo/
+  http://external.nj.nec.com/homepages/igord/usrman.htm
+
+* A C client by Ieuan Willis:
+  http://www.acse.shef.ac.uk/~ieuan/othello.html
+
+* Othello Development Kit (ODK) by Chris Welty.
+  http://www.btinternet.com/~chris.welty/
+
+* For more advanced users (unix), if you have a program that communicates
+  via stdin/out you can connect it to GGS without any modification to
+  your program, use libGSA :)
+  I have started rewrite of GGS into set of libraries .. get it at:
+  http://www.cs.ualberta.ca/~mburo/GGS/src/GGS2-0.0.2.tar.bz2
+  You will find Othello, Xboard, GnuGo Clients. Use them as example for other
+  games.

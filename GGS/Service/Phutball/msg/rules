@@ -1,0 +1,87 @@
+You can play on rectangular boards from 7x7 to 26x26 (even 7x26).  It is
+conventional to use height >= width, but this is not necessary.  
+Height & Width are generally both ODD so there is a centerpoint. 
+Usually Phutball is played on the vertices of a
+17 (horiz) x 19 (vertical) grid.
+
+History:
+  Phutball was invented by J.H.Conway and is described in volume 2 of book
+  "Winning ways for your mathematical plays" by Conway, Berlekamp & Guy,
+  Academic Press 1982.
+
+Rules:
+  There are 2 kinds of pieces: the (one) BALL and (many) STONES.
+  The BALL is black. The STONES are white.
+  The ball starts at the centerpoint.
+  The object is to get the ball ON or OVER the goal line at the top
+     (or bottom, for your opponent) side.
+  There are 2 possible kinds of moves. You must make one of them each turn.
+    (1) place a STONE on any empty vertex.
+    (2) jump the BALL over chains of consecutive stones horizontally,
+    vertically, or diagonally to the first vacant vertex beyond them;
+    removing the stones you jump over immediately as you jump over
+    them. The jump can be multiple.  You can jump to your opponent's goal
+    line IF, and only if, this is NOT the final location of the ball in
+    that move (otherwise you would lose immediately); thus this can only
+    happen midway through a multiple jump.
+
+Example: In this position, the ball 0 has 5 possible jumps:
+
+           .6......  <---goal line
+           X0XX1.4.
+           X..X.X..
+           ..2X3.5.
+           ........  <---goal line
+
+  namely:           0-1, 0-1-2, 0-1-2-3, 0-1-2-3-4, 0-1-5 respectively
+causing removal of   2     3       4         5        3   stones.
+The jump 0-1-2-3-6 (which would win instantly for the upward player)
+sadly is not legal since it would need to jump over previously-removed
+stones.  If the lower goal line were removed (i.e. upshifted 1 line)
+then the jumps 0-1-2, 0-1-2-3, 0-1-5 would be illegal suicide moves if
+made by the upward player (although legal immediate wins if made by
+the downward player), but 0-1-2-3-4 and 0-1 would be legal.
+
+IS IT LEGAL TO JUMP DIAGONALLY OVER THE GOAL LINE THRU THE CORNER???
+
+Example: Here the upward player has 2??? immediate triple-jump wins in
+both cases jumping OVER the goal line: 0-1-2-*. The downward player
+(if it is his move) could try to prevent this by placing a stone at 1
+or 2, but in either case that would be futile since Upward would win
+immediately anyway by a different jump sequence 0-3-4-* or 0-1-5.
+
+           .X5X <---goal line
+           .42.
+           ..X.
+           0X13
+           ...X <---goal line
+
+Handicap:
+  You can start with the BALL closer to my goal line (noncentral)
+  if I am a weaker player than you are. That evens the chances.
+
+No draws:
+  Draws by position repetition (and player agreement) conceiveably
+  are possible, but in practice never happen - the game is too tricky
+  and there are too many nasty ways to kill you. (And: a draw because
+  there is no legal move, is impossible.)
+
+Web pages:
+Writing a strong computer Phutball player might face some
+difficult challenges. See
+ E. Demaine, M. Demaine, and D. Eppstein:
+ Phutball endgames are hard.
+ ACM Computing Research Repository, cs.CC/0008025.
+ http://arXiv.org/abs/cs.CC/0008025
+Shows that, in John Conway's board game Phutball (or Philosopher's
+Football), it is NP-complete to determine whether the current player
+has a move that immediately wins the game. (It is also #P-complete
+just to count your legal moves.) In contrast, the similar problems of
+determining whether there is an immediately winning move in checkers,
+or a move that kings a man, are both solvable in polynomial time.
+
+Suggestions, comments, etc.?:
+  wds@research.nj.nec.com
+
+Wds
+

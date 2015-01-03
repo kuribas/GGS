@@ -1,0 +1,32 @@
+#! /bin/bash
+
+# $Id: copy_code 147 2005-05-02 01:10:07Z ggs_mburo $
+
+# copy executables and libraries to the execution directory
+
+code="Server/Central/main        \
+Server/Multiplexor/main    	\
+Service/Amazons/main	     	\
+Service/Ataxx/main	     	\
+Service/Checkers/main	     	\
+Service/Chess/main	     	\
+Service/Domineering/main 	\
+Service/DotsAndBoxes/main	\
+Service/Go/main	     	  	\
+Service/Hex/main	   	\
+Service/Othello/main	    	\
+Service/Phutball/main	     	\
+Service/Snort/main	     	\
+Service/TD/main	     	    	\
+lib/libGDK.so		     	\
+lib/libGGS_GameLib.so"
+
+exec_dir=~/GGS
+
+for i in $code
+do
+
+ cp -v $i $exec_dir/$i
+
+done
+

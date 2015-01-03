@@ -1,0 +1,26 @@
+Ghost player concept
+--------------------
+
+Only /services support ghost players concept.
+
+A ghost player is a player that has disconnected, but is participating
+in one or more tournaments. Tournaments have strict time conditions,
+therefore, breaking the game and waiting for the player to appear is
+not an option (note: this also reduces cheating). Hence, /services
+will create a ghost version of a player for the purposes of tournament
+matches.
+
+Ghost players are indicated on game /services with "x" instead of "+"
+(open) or "-" (closed). For all purposes other than participating in
+tournament matches, ghost player is not there.
+
+Ghost will be replaced with the real player once player reconnects.
+All tournament matches that are going on (and the player is
+participating in them) will send match continuation messages (board,
+moves, etc.).
+
+Only registered players can participate in tournaments.
+
+Tournament directors have in their power to start tournament matches
+with or without players present!
+

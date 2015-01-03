@@ -1,0 +1,59 @@
+Ataxx game types
+================
+
+Syntax:
+-------
+
+<board> :: 4,5,...,14
+<gtype> :: [S]<board>[K][R<integer>][B|W]
+<rtype> :: <board>[R]
+
+<move>  :: <coord-coord>[/<eval>[/<time>]] // e.g: a1-a2/0/10.3
+
+(lower case letters OK)
+
+
+Semantics:
+----------
+
+4(1)14: 4x4 ... 14x14 boards
+
+S     : Synchro mode: two games are played simultaneously. The match 
+        result is the average result of both games.
+
+K     : Komi game. Both players have to send the expected game result
+        (in view of the player to move) together with the first move.
+        The komi value is then calculated as the average of both values
+        in view of black and colors are assigned accordingly. If both
+        parties report the same value, colors are chosen randomly.
+        Black wins if Black's score is > komi, the game is
+        a draw if Black's score is = komi, otherwise White
+        wins.
+
+        Example:
+
+           Suppose White is to move in the initial position
+           Player 1 reports +4 (for White!)
+           Player 2 reports +2 (again for White!).
+           komi = - (+4+2)/2 = -3
+           Player 1 is assigned White, since he thinks White is better.
+           Player 2 plays Black.
+           White wins if his disc advantage is more than 3.
+
+Rn    : Random game. The game begins with a random starting position
+        with n blocked squares.
+
+B|W   : Color preference of the asking player. Only meaningful in non-komi,
+        non-random games.
+
+If no K,R,B,W qualifier is given colors are assigned randomly and komi
+is set to 0.
+
+Examples:
+
+7      :  Standard 7x7 Ataxx game. Random colors. komi = 0.
+S8R18  :  start two simultaneous 8x8 games with 18 random blocked squares.
+10B    :  10x10 Ataxx game. The requesting player wants to play black.
+9KR20  :  9x9-komi-random-20 game. A random position with 20 blocked squares
+          is drawn and the players are asked for their result estimate.
+          One game is played.

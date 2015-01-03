@@ -1,0 +1,60 @@
+Othello game types
+==================
+
+Syntax:
+
+<type>  :: <board>[K][R<integer>][A][B|W]
+<board> :: 4|6|8|10|12|14|88
+
+Semantics:
+
+4(2)14: 4x4 ... 14x14 boards
+88    : 10x10 octogon board (88 squares)
+K     : Komi game. Both players have to send the expected game result
+        (in view of the player to move) together with the first move.
+        The komi value is then calculated as the average of both values
+        in view of black and colors are assigned accordingly. If both
+        parties report the same value, colors are chosen randomly.
+        Black wins if #black discs - #white discs > komi, the game is
+        a draw if #black discs - #white discs = komi, otherwise White
+        wins. [In anti games (see below) #white discs - #black discs is
+        compared with the komi value].
+
+        Example:
+
+           Suppose White is to move in the initial position
+           Player 1 reports +4 (for White!)
+           Player 2 reports +3 (again for White!).
+           komi = - (+4+3)/2 = -3.5
+           Player 1 is assigned White, since he thinks White is better.
+           Player 2 plays Black.
+           White wins if his disc advantage is more than 3.5.
+
+Rn    : Random game. The game begins with a random starting position
+        with n>=4 discs. Unless it is also a komi game, two games are
+        played simultaneously (*). The match result is the average
+        result of both games.
+A     : Anti game. Now the player with less discs wins! The scores to be
+        sent in komi games are still in view of the player to move. Positive
+        values are interpreted as good for the player. E.g. +4 means the
+        player thinks he will end up with 4 discs *less* than the opponent.
+B|W   : Color preference of the asking player. Only meaningful in non-komi,
+        non-random games.
+
+If no K,R,B,W qualifier is given colors are assigned randomly and komi
+is set to 0.
+
+(*) not implemented yet.
+
+
+Examples:
+
+8      :  8x8 Othello game. Random colors. komi = 0.
+10B    :  10x10 Othello game. The requesting player wants to play black.
+6A     :  6x6 anti Othello game. Random colors. komi = 0. Fun!
+88KR20 :  10x10-octogon-komi-random-20 game. A 20 disc random position
+          is drawn and the players are asked for their result estimate.
+          One game is played.
+12R10  :  12x12-random-10 match consisting of two simultaneous 12x12 games
+          starting with the same 10 disc random position.
+14KR54A:  Silly :)

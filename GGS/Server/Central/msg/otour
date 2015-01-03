@@ -1,0 +1,61 @@
+
+
+Hello all,
+
+On January 19th 2002 there will be an open synchro-rand Othello
+tournament on GGS; "open" means anyone can participate (computer or
+human). The synchro-rand format (see below) is however difficult for
+humans. We will use the Swiss system so most games will be between
+players of similar strengths.
+
+Players must be registered on GGS to play; GGS registration is free. I
+strongly suggest anyone wishing to play should try out GGS, and
+register, in advance of the tourmament date.
+
+
+Place: GGS Server (details below)
+
+Start time: 19th January 2002, 3 PM London time (Europe - 4 PM CET, US
+- 10 AM Eastern, 9 AM Central, 8 AM Mountain, 7 AM Pacific)
+
+Time control: 2x15 minutes
+
+Style: Depends on number of participants, but likely 7 round Swiss
+with 3-minute breaks
+
+
+Start position: 8x8 board, synchro random start position with 20 discs
+
+ 
+GGS Server:
+
+Windows GUI: http://www.neci.nec.com/homepages/mic/ggs/chris/Lion.zip,
+unzip and select GGS/Connect from the menu.
+
+Java GUI: http://www.neci.nec.com/homepages/mic/ggsa/ggsa.html
+
+Accessible by telnet (external.nj.nec.com port 5000 or 4000)
+
+Programmers: Java and C++ code interfaces are available at
+http://www.neci.nec.com/homepages/mic/mic.html
+
+ 
+Synchro Rand:
+
+Each "match" between two players consists of two simultaneous Othello
+games which have the same randomly chosen start position; each player
+is white in one game and black in the other. The winner is the player
+with the largest disc total in the two games.
+
+This makes it easier for programs to play: no need for opening book,
+since the start position is random; no need to think on the opponent's
+time, since you will be thinking about your other game then. The
+program just looks at the board and returns a move.
+
+ 
+This makes it harder for humans to play, since you need to keep track
+of separate plans in two games simultaneously.
+
+
+/Chris Welty (n2 on GGS)
+

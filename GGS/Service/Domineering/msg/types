@@ -1,0 +1,55 @@
+Domineering game types
+^^^^^^^^^^^^^^^^^^^^^^
+
+Syntax:
+
+<type>  :: <board>[K][R<integer>][A][B|W]
+<board> :: 4|6|8|10|12|14|16|18|20|22|24|26
+
+Semantics:
+
+4(2)26: 4x4 ... 26x26 boards
+K     : Komi game. Both players have to send the expected game result
+        (in view of the player to move) together with the first move.
+        The komi value is then calculated as the average of both values
+        in view of black and colors are assigned accordingly. If both
+        parties report the same value, colors are chosen randomly.
+        Black wins if score > komi, the game is a draw if score = komi,
+        otherwise White wins.
+
+        Example:
+
+           Suppose White is to move in the initial position
+           Player 1 reports +4 (for White!)
+           Player 2 reports +3 (again for White!).
+           komi = - (+4+3)/2 = -3.5
+           Player 1 is assigned White, since he thinks White is better.
+           Player 2 plays Black.
+           White wins if his score is more than 3.5.
+
+Rn    : Random game. The game begins with a random starting position
+        with n<=(width/2)^2-1 dominoes. Unless it is also a komi game,
+        two games are played simultaneously. The match result is the average
+        result of both games.
+A     : Anti game. Now the player with less moves wins! The scores to be
+        sent in komi games are still in view of the player to move. Positive
+        values are interpreted as good for the player. E.g. +4 means the
+        player thinks he will end up with 4 moves *less* than the opponent.
+B|W   : Color preference of the asking player. Only meaningful in non-komi,
+        non-random games.
+
+If no K,R,B,W qualifier is given colors are assigned randomly and komi
+is set to 0.
+
+
+Examples:
+
+8      :  8x8 Domineering game. Random colors. komi = 0.
+10B    :  10x10 Domineering game. The requesting player wants to play black.
+6A     :  6x6 anti Domineering game. Random colors. komi = 0. Fun!
+18KR20 :  18x18-komi-random-20 game. A 20 domino random position
+          is drawn and the players are asked for their result estimate.
+          One game is played.
+s12R10 :  12x12-random-10 match consisting of two simultaneous 12x12 games
+          starting with the same 10 domino random position.
+24KR54A:  Silly :)

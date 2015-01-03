@@ -1,0 +1,35 @@
+SSL connection to GGS at port 5006
+===================================
+
+OpenSSL: http://www.openssl.org/
+--------------------------------
+OpenSSL is a library implementing secure socket layer protocol.
+To create a telnet like connection to GGS enter:
+
+   openssl s_client -connect opal.cs.ualberta.ca:5006
+
+
+SSLProxy: http://www.obdev.at/Products/sslproxy.html
+-----------------------------------------------------
+SSLProxy is a tcp proxy that implements server/client proxy service on
+top of OpenSSL. To connect to GGS: 1) create an SSL tunnel from say
+local port 5000 to GGS SSL port, 2) use telnet, GGSA, or any other GGS
+client to tunnel from local port 5000 to GGS:
+
+  sslproxy -l 5000 -R opal.cs.ualberta.ca -r 5006 &
+  telnet localhost 5000
+
+
+STunnel: http://www.stunnel.org/
+----------------------------------
+STunnel is tcp proxy very similar to SSLProxy. 
+GGS is currently running stunnel-3.22.
+The syntax to forward local port 5000 to GGS is:
+
+  stunnel -c -p <path>/<file>.pem -d 5000 -r opal.cs.ualberta.ca:5006 &
+  telnet localhost 5000
+
+Any other SSL enabled tcp client should work out of the box.
+
+If you are an unfortunate one running Windumbs .. email Micro$oft and
+ask for help :)

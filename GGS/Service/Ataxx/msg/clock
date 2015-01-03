@@ -1,0 +1,64 @@
+GGS clock can be specified in the following way:
+
+[ini[,[N]m1]]/[inc[,[N]m2]]/[ext[,[N]m3]]
+
+where ini, inc and ext are times specified in [[HH:]MM:]SS format.
+
+Clock parameters have following meaning:
+
+Initial time (ini) is the initial time on the players clock. Player
+has to complete m1 moves - or if m1 is 0 to finish the whole game
+before clock goes to zero. Parameter N specifies what happens if the
+clock goes to 0 and player does not complete game or m1 moves. If N is
+not present, clock goes into soft-timeout loss[1]. If N (read NOT
+loss) is present, clock goes into overtime (extension time)
+mode. Completion of m1 moves causes clock to go to overtime mode too.
+
+In overtime mode, player has to make m3 moves (or finish the game if
+m3 is 0) before clock reaches 0. Parameter N specifies how is overtime
+added to the clock. If N is not present, overtime is additive, i.e. it
+is added to the remaining time. if N (read NOT add) is present, clock
+is (re)set to overtime every m3 moves and any unused time is lost. If
+player does not complete game or m3 moves during overtime clock goes
+into hard-timeout[2].
+
+Increment time (inc) is the time that will be added to players clock
+every m2 moves (m2 >= 1). Parameter N specifies how is increment time
+added to the clock. If N is not present, increment time is additive,
+i.e. it is added to the clock. If N (read NOT additive) is present,
+min( spent_time, increment_time ) is added to the clock.
+
+See formula page to see how to access clock parameters in a formula.
+
+
+Footnotes:
+
+[1] Some games, like Othello have soft-timeout, it ensures minimal
+loss, but player is allowed extension time to complete the game. The
+actual score is min( minimal_loss, board_score ). Other (mostly
+win/draw/loss) games treat soft-timeout as hard-timeout.
+
+[2] Hard-timeout results in maximal loss.
+
+
+Here are few examples that ilustrate clock specifications:
+
+Chess tournament clock: 2 hours for 40 minutes, if the game is not
+finished, players receive additional 30 minutes to complete the game:
+2:00:00,40//30:00,0
+
+Blitz chess, Fisher clock: 2 minutes plus 12 seconds per move:
+2:00,0/12/0
+
+Blitz chess, Bronstein clock: 2 minutes, at most 12 seconds per move:
+2:00,0/12,N1/0
+
+Othello tournament clock: 30 minutes to complete the game, 2 minutes
+to complete the lost game in the case of timeout: 
+30:00,0//2:00,0
+
+Go tournament clock: 30 minute to complete the game, if the game is
+not finished, player receives 5 minutes overtime for 10 moves:
+30:00,N0//5:00,N10
+
+5.Oct.2000 (c) Igor Durdanovic, igord@research.nj.nec.com

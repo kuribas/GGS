@@ -1,0 +1,103 @@
+# $Id: opts.bin.rules 160 2007-06-22 15:21:10Z mburo $
+
+# generic makefile rules
+
+SEDFLT = ../../config/opts.sed
+SRCDIR = src
+MKFDIR = mkf
+OBJDIR = obj
+BINDIR = bin
+
+# Files
+
+CWD   = $(shell "pwd")
+SRC_S = $(wildcard $(SRCDIR)/*.C)
+MKF_S = $(patsubst $(SRCDIR)/%.C, $(MKFDIR)/%.m, $(SRC_S))
+OBJ_S = $(patsubst $(SRCDIR)/%.C, $(OBJDIR)/%.o, $(SRC_S))
+
+# Options
+
+PREPROC = $(CC)  $(CC_ARGS) -E $< 
+DEPEND  = $(CPP) $(CC_ARGS) -MM $<
+COMPILE = $(CC)  $(CC_ARGS) -c $< -o
+LINK    = $(CC)  $(CC_FLAGS) $(LD_ARGS) -o $(BINDIR)/$(MAIN) $(LD_LIBS) $(OBJDIR)/*.o -lm -lgdbm -lbz2 -lz 
+#-lefence
+
+# Meta Rules
+
+%.i: $(SRCDIR)/%.C
+	@ echo $@
+	@ rm -f $@
+	@ $(PREPROC) > $@
+
+$(MKFDIR)/%.m: $(SRCDIR)/%.C
+	@ echo  $@
+	@ rm -f $@
+	@ $(DEPEND) > $@
+	@ echo "	@ echo $(patsubst $(SRCDIR)/%.C, $(OBJDIR)/%.o, $<)" >> $@
+	@ echo "	@ $(COMPILE) $(patsubst $(SRCDIR)/%.C, $(OBJDIR)/%.o, $<)" >> $@
+	@ echo "" >> $@
+	@ echo "" >> $@
+
+$(OBJDIR)/%.o: $(MKFDIR)/%.m
+	@ echo    $@
+	@ rm   -f $@ 
+	+ @ make -f $<
+
+$(BINDIR)/%: $(OBJDIR)/%.o
+	@ echo    $@
+	@ rm -f   $@
+	@ $(LINK)
+
+# Rules
+
+all::	$(MKFDIR)/_all.mk
+	+ @ make -f $(MKFDIR)/_all.mk
+	@ rm -f core
+#	@ rm -f bin
+
+$(MKFDIR)/_all.mk::	$(MKF_S)
+	@ rm -f $@
+	@ echo $@
+	@ echo "# Makefile (auto) [bof] (c) Igor Durdanovic 1996" > $@
+	@ echo " " >> $@
+	@ echo "$(BINDIR)/$(MAIN):	$(OBJ_S)" >> $@
+	@ echo "	@ echo $(BINDIR)/$(MAIN)" >> $@
+	@ echo "	@ $(LINK)" >> $@
+	@ echo " " >> $@
+	@ sed -f $(SEDFLT) $(MKFDIR)/*.m >> $@
+	@ echo "# Makefile (auto) [eof] (c) Igor Durdanovic 1996" >> $@
+
+dir::	
+	@ rm -rf $(BINDIR) 
+	@ rm -rf $(OBJDIR)
+	@ rm -rf $(MKFDIR)
+	@ mkdir -p $(BINDIR)
+	@ mkdir -p $(OBJDIR)
+	@ mkdir -p $(MKFDIR)
+
+echo::
+	@ echo $(CWD)
+	@ echo $(PREPROC)
+	@ echo $(COMPILE)
+	@ echo $(LINK)
+
+clean:: bak
+	@ rm -rf $(BINDIR)/*
+	@ rm -rf $(MKFDIR)/* 
+	@ rm -rf $(OBJDIR)/*
+
+bak::
+	@ rm -f *~ $(SRCDIR)/*~ msg/*~
+
+clean-log::
+	@ rm -f log/*
+
+trunc-log::
+	@ ../../bin/make-trunc-log.sh
+
+backup::
+	@ ../../bin/make-backup.sh
+
+export::
+	@ ../../bin/make-export.sh

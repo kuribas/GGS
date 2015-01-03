@@ -1,0 +1,73 @@
+Info about the game of Hex
+--------------------------
+
+Rules
+-----
+
+Hex is played on an NxN rhombus board "tiled with hexagons".  The
+players, White and Black, each own one pair of opposite edges of the
+board. The players take turns placing their pieces on any empty
+hex. (Black moves first on GGS.)  The object of the game is to connect
+your two edges of the board with your color pieces.  The first player
+to create such a cross-board connection is the winner.
+
+Common board sizes
+------------------
+N={8,9,10,11,12,13,14}  all seem commonly used. N EVEN may be
+more fun since there is no central hex then (tends to be a strong
+first move if N is odd). Experienced players will prefer larger
+board sizes.
+
+History
+-------
+The game of Hex was invented and copyrighted by Danish poet &
+scientist Piet Hein (1905-1996) in 1942, and (according to Martin
+Gardner column in Scientific American) independently by John F. Nash
+in 1948.  (Nash later won a Nobel prize.) Hex sets were sold
+commercially by Hein and later by Parker Brothers.
+
+Info
+----
+There is a Hex FAQ by David Boll (dboll@vcd.hp.com) at
+  http://www.gamerz.net/~pbmserv/hex.faq.html  
+describing some elementary tactical ideas.  
+Another hex faq is by Bert Enderton (fishbait@chessclub.com)
+  http://www.cs.cmu.edu/~hde/hex/hexfaq/
+and includes several scholarly references.
+Jack van Rijswijck (javhar@cs.ualberta.ca) wrote program "queenbee",
+info on this and Hex theory on his web page
+  http://www.cs.ualberta.ca/~javhar/hex/
+Vadim Anshelevich (vanshel@earthlink.net) wrote program "Hexy",
+strongest program available, won london olympiad and AAAI-2000
+"best paper" prize, info on this on his web page
+  http://home.earthlink.net/~vanshel/
+Jon Kleiser says how to make a nice picture of a hex board using HTML:
+  http://www.uio.no/~jkleiser/hex/hexboard.html  
+
+Draws are impossible and Hex is known to be a forced win for the first
+player. This was pointed out by Nash. But since the proof is
+nonconstructive, nobody knows HOW to win; and it's known to be PSPACE
+complete to tell if a hex position is won, so not likely to be easy!
+
+3-move equalization
+-------------------
+To make things even, Hex is commonly played as follows: One player
+constructs a position with two moves by the first and one move by the
+2nd player.  Then the other player chooses who plays which side.
+
+Score
+-----
+Rather than boringly getting 1 point if win, -1 if lose, to make it
+more interesting, I'm putting this:
+if you win with a fraction E, 0<E<1, of the hexes being empty, then
+you get E points. (Winning more quickly ==> more points.)
+
+Komi equalization
+-----------------
+Above scoring method permits playing from random start positions with
+GGS's "komi" facility.
+
+Suggestions, comments, etc. to igord@research.nj.nec.com
+and/or Warren Smith              wds@research.nj.nec.com
+
+Igor

@@ -1,0 +1,227 @@
+/services Format, or how to parse messages that are coming from the server.
+
+Syntax: 
+..        ::= sequence
+a|b       ::= either a or b
+[a]       ::= a is optional
+<V T [F]> ::= variable V of type T formated with F (C-printf format)
+[on]      ::= a vt100 color sequence if vt100 is on
+[off]     ::= a vt100 reset sequence if vt100 is on
+text      ::= a real text that is send
+<X list>  ::= a possible empty list of X
+{n|...}   ::= line number n or mulitiple lines
+<HHMMSS>  ::= [<days>.]HH:MM:SS[.<usec>]
+<CLOCK>   ::= <HHMMSS>/<HHMMSS>/<HHMMSS>
+//comment ::= comment, not part of a message
+
+Note that every message is produced by tell <user> message>, hence on
+your side every message will come as /os: <message>.
+
+
+- + <login> <level>
+- - <login>
+<null>
+
+
+- top <type>
+- top <type> <num>
+- top <type> <from> <num>
+top  <%5d> <%6.1f>@<%5.1f>      Inactive       AScore    Win   Draw   Loss
+{...}<%5d> <%-8s> <%6.1f>@<%5.1f>=<HHMMSS>+@<%5.1f> <%5.1f><%7d><%7d><%7d>[ <=]
+
+
+- rank <type>
+- rank <type> <login>
+rank <%5d> <%6.1f>@<%5.1f>      Inactive       AScore    Win   Draw   Loss
+{...}<%5d> <%-8s> <%6.1f>@<%5.1f>=<HHMMSS>+@<%5.1f> <%5.1f><%7d><%7d><%7d>[ <=]
+
+
+- who <type>
+- who <type> o
+- who <type> -pts +pts
+- who <type> o -pts +pts
+who <total %5d> change for:    win    draw    loss
+{...}<%-8s> +|- <%6.1f>@<%5.1f> [-> <%+6.1f> <%+6.1f> <+6.1f> @<%5.1f>] [<%s> .. <%s>]
+
+
+- finger
+- finger <login> .. <login>
+finger
+login: <name %-8s>
+dblen: <ratio %5.1f> = <Zsize %d> / <Tsize %d>
+level: <%d>
+mode : <%d>
+open : <%d>
+trust: +|-
+rated: +|-
+bell : +|-
+vt100: +|-
+play : [ <.id> .. <.id>
+notify (+|-) : [*] <login list>
+track  (+|-) : [*] <login list>
+ignore (+|-) : <login list>
+request(+|-) : <.id list> : <.id list>
+watch  (+|-) : <.id list> 
+Type  Rating@StDev      Inactive       AScore    Win   Draw   Loss
+{...}<%-5s> <%6.1f>@<%5.1f>=<HHMMSS>+@<%5.2f> <%5.1f> <%7d><%7d>%7d>
+
+
+- assess <.id> <score>
+- assess <type> <login> <score>
+- assess <type> <login> <login> <score>
+assess
+<%-8s> <%7.2f>@<%6.2f> <%7.2f> -> <%7.2f>@<%6.2f>
+<%-8s> <%7.2f>@<%6.2f> <%7.2f> -> <%7.2f>@<%6.2f>
+
+
+- ask <.counter>
+- ask <type> [your-time [opp-time]] <opponent>; time in HH:MM:SS
+- ask <type> [your-time [opp-time]] -pts +pts, time in HH:MM:SS
+//the match request message looks like:
+ +|-  <.id %s> <%6.1f> <%-8s> <CLOCK> <%8s> R|U|S <%6.1f> <%-8s> [CLOCK]
+
+
+- accept <.id>
+- decline <.id>|<login> .. <.id>|<login>
+- cancel <.id>|<login> .. <.id>|<login>
+- play <id> <move>
+- undo <id>
+- abort <id>
+- break <id>
+- score <id> <result>
+- resign <id>
+- moves <id>
+<null> ask Mic
+
+
+- tell <.id> <mssg>
+- tell o <.id> <mssg>
+<null>
+
+- history
+- history <login> .. <login>
+history <no %d> <%s>
+{1..no}<.id %-8s> <date %20s> <type %-8s> <%-8s> <%-8s> <score %5.1f>
+
+
+- stored
+- stored <login> .. <login>
+stored <no %d> <%s>
+{1..no}<.id %-8s> <date %20s> <type %-8s> <%-8s> <%-8s>
+
+
+- look <.counter>
+<null> ask Mic
+
+
+- help 
+- help <file> .. <file>
+help <file>
+{...} content of the file
+
+- open <num>
+- mode <num>
+- bell [+|-]
+- vt100 [+|-]
+- trust [+|-]
+- rated [+|-]
+<null>
+
+- request
+- request <login>|<.id> .. <login>|<.id>
+request glob(<%d>/<%d>) recv(<%d>/<%d>) send(<%d>/<%d>)
+sent <%d>
+{1..n} <.id %4s> <%6.1f> <%-8s> <CLOCK> <%8s> U|R|S <%6.1f> <%-8s> [CLOCK]
+
+- request +|- // global
+<null>
+
+- match
+- match <login>|<.id> .. <login>|<.id>
+match <no %d>/<%d>
+{1..no}<.id %4s> <type %8s> U|R <%4.0f> <%-8s> <%4.0f> <%-8s> <CLOCK> <CLOCK> <%d>
+
+
+- watch
+watch <%d> : <.id %s>(<%d>) .. <.id %s>(<%d>)
+
+- watch +|-
+<null>
+
+- watch <.id> .. <.id>
+watch
+ <.id %-8s> <%d> : <login %s> .. <login %s>
+
+- watch <.id> .. <.id> +|-
+<null>
+
+
+- notify
+notify <%d> : <login %s>(<%d>) .. <login %s>(<%d>)
+
+- notify +|-
+- notify *|% 
+<null>
+
+- notify <login> .. <login> 
+notify
+<login %-8s> <%d> : <login %s> .. <login %s>
+
+- notify <login> .. <login> +|-
+notify <%d> : <login %s>(<%d>) .. <login %s>(<%d>)
+<null>
+
+
+- track
+track <%d> : <login %s>(<%d>) .. <login %s>(<%d>)
+
+- track +|-
+- track *|%
+<null>
+
+- track <login> .. <login> 
+track
+<login %-8s> <%d> : <login %s> .. <login %s>
+
+- track <login> .. <login> +|-
+<null>
+
+
+// system commands
+
+- uptime
+: [on]uptime[off]
+Compiled    : <date %s>
+Current     : <date %s>
+On-line     : <date %s> : <%7.3f> = <HHMMSS> / <HHMMSS>
+Rebooted    : <date %s> : <HHMMSS>
+Users       : <now %d> / <max %d> / <total %d>
+Requests    : <now %d> / <max %d> / <total %d>
+Matches     : <now %d> / <max %d> / <total %d>
+Inp [N/M/T] : <now %d> / <max %d> / <total %d>
+Out [N/M/T] : <now %d> / <max %d> / <total %d>
+IO  [%=C/D] : <ratio %7.3f> / <compressed %d> / <decompressed %d>
+DB  [%=C/D] : <ratio %7.3f> / <compressed %d> / <decompressed %d>
+FS [blocks] : <ratio %7.3f> / <free %d> / <total %d> x <size %d>
+FS [inodes] : <ratio %7.3f> / <free %d> / <total %d>
+RAM [%=F/T] : <ratio %7.3f> / <free %d> / <total %d>
+SWAP[%=F/T] : <ratio %7.3f> / <free %d> / <total %d>
+
+
+- salias
+: [on]alias[off] <no int %d>
+{x=1..no}<name string %-8s> <definition string %s>
+
+- salias ?<prefix>
+: [on]alias[off]
+{x=0..?}<name string %-8s> <definition string %s>
+
+- salias <name>
+- salias <name> <definition>
+<null>
+
+- shistory
+system history <no %d>
+{1..no}<.id %-8s> <date %20s> <type %-8s> <%-8s> <%-8s> <score %5.1f>
+
+

@@ -1,0 +1,53 @@
+Amazons game types
+==================
+
+Syntax:
+
+<type>  :: <board>[K][R][B|W]
+<board> :: 4|6|8|10|12|14
+
+Semantics:
+
+4(2)14: 4x4 ... 14x14 boards
+K     : Komi game. Both players have to send the expected game result
+        (in view of the player to move) together with the first move.
+        The komi value is then calculated as the average of both values
+        in view of black and colors are assigned accordingly. If both
+        parties report the same value, colors are chosen randomly.
+        Black wins if #blackmovess - #whitemovess > komi, the game is
+        a draw if #blackmovess - #whitemovess = komi, otherwise White
+        wins. [In anti games (see below) #whitemovess - #blackmoves is
+        compared with the komi value].
+
+        Example:
+
+           Suppose White is to move in the initial position
+           Player 1 reports +4 (for White!)
+           Player 2 reports +3 (again for White!).
+           komi = - (+4+3)/2 = -3.5
+           Player 1 is assigned White, since he thinks White is better.
+           Player 2 plays Black.
+           White wins if his move advantage is more than 3.5.
+
+R     : Random game. The game begins with a random starting position
+        Unless it is also a komi game, two games are
+        played simultaneously (*). The match result is the average
+        result of both games.
+B|W   : Color preference of the asking player. Only meaningful in non-komi,
+        non-random games.
+
+If no K,R,B,W qualifier is given colors are assigned randomly and komi
+is set to 0.
+
+(*) not implemented yet.
+
+
+Examples:
+
+10     :  10x10 Amazons game. Random colors. komi = 0.
+8B     :  8x8 Amazons game. The requesting player wants to play black.
+14KR   :  14x14-komi-random game. A random starting position is
+          is drawn and the players are asked for their result estimate.
+          One game is played.
+12R    :  12x12-random match consisting of two simultaneous 12x12 games
+          starting with the same random position.

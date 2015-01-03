@@ -1,0 +1,1 @@
+rsync -aczvr -e ssh . hal:GGS/Service/GameLib/.src/

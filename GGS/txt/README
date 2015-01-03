@@ -1,0 +1,58 @@
+To compile GGS (GSA):
+
+cd <path>/GSA
+cd config
+-- edit opts.*, define.h, etc.
+cd ..
+make dir
+make all
+
+If compiler complains that find() method is private in String.*
+make it public ..
+
+add
+  setenv GSAHOME <path>/GGS
+into your .[t]cshrc
+
+Create initial databases for Server/Central, Service/*:
+
+cd Server/Central; main -db_init
+cd Service/Othello; main -db_init
+...
+
+This creates X.db in db/ subdir of each Server/Service
+Log files are in log/ subdir of each Server/Service.
+
+run central server (execute bin/Srv.sh or): 
+
+cd Server/Central 
+make run    # will clean old logs
+main [5000] &
+
+Test connection:
+
+telnet localhost 5000
+root  # login
+root  # password
+who   # and you should see yourself
+
+add Othello (or all services with bin/Svc.sh):
+
+cd Service/Othello
+make run              # clean old logs
+main [localhost 5000] &
+
+typing "who" should show /os too.
+
+Service(s) can not function properly unless they are in "_service"
+group. First, you should register the service:
+
+name /os Othello Service
+email /os <your email>
+
+then, you can add them to "_service" group by entering:
+
+group _service + /os
+
+finally, disconnect service and start it again!
+

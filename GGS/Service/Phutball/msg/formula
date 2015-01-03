@@ -1,0 +1,97 @@
+Game Service Formula(s)
+-----------------------
+
+You can use formulas to auto-decline and auto-accept match requests.
+Empty formula will evaluate to false. A formula is a BOOLean
+expression. Formula language is a strongly typed language!
+
+Formulas can be build out of constants:
+W|B|?   : COLOR        // colors
+T|F     : BOOL         // boolean constant
+<int>   : INT          // integer constant
+<real>  : REAL         // real    constant, must contain '.'
+
+nullary and unary functions:
+saved   : BOOL         // stored game
+rated   : BOOL         // rated  game
+rand    : BOOL         // random game
+komi    : BOOL         // komi   game
+anti    : BOOL         // anti   game
+discs   : INT          // random discs
+size    : INT          // board  size
+stored  : INT          // how many stored games against this player
+mc      : COLOR        // MY color
+oc      : COLOR        // OPP's color
+mt1     : INT          // MY initial time - see clock page for details
+mm1     : INT          // #moves during initial time
+ml1     : BOOL         // does timeout during inital timeresult in a loss
+mt2     : INT          // MY increment time
+mm2     : INT          // how many move per increment
+ma2     : BOOL         // is increment additive
+mt3     : INT          // MY extension time
+mm3     : INT          // #moves per extension
+ma3     : BOOL         // is extension additive
+ot1     : INT          // OPP's initial time
+om1     : INT          // #moves during initial time
+ol1     : BOOL         // does timeout during inital timeresult in a loss
+ot2     : INT          // OPP's increment time
+om2     : INT          // how many move per increment
+oa2     : BOOL         // is increment additive
+ot3     : INT          // OPP's extension time
+om3     : INT          // #moves per extension
+oa3     : BOOL         // is extension additive
+mr      : REAL         // MY rating
+or      : REAL         // OPP's rating
+md      : REAL -> REAL // my rating delta change for result
+od      : REAL -> REAL // opponent's rating delta change for result
+
+and unary and binary operators:
+!       : BOOL -> BOOL          // not 
++       : INT  -> INT           // no effect
++       : REAL -> REAL
+-       : INT  -> INT           // negation
+-       : REAL -> REAL
+|       : BOOL  x BOOL  -> BOOL // or  
+&       : BOOL  x BOOL  -> BOOL // and
+!=      : BOOL  x BOOL  -> BOOL // not equal 
+!=      : COLOR x COLOR -> BOOL  
+!=      : INT   x INT   -> BOOL  
+!=      : REAL  x REAL  -> BOOL  
+==      : BOOL  x BOOL  -> BOOL // equal
+==      : COLOR x COLOR -> BOOL  
+==      : INT   x INT   -> BOOL  
+==      : REAL  x REAL  -> BOOL  
+<       : INT   x INT   -> BOOL // less then 
+<       : REAL  x REAL  -> BOOL 
+<=      : INT   x INT   -> BOOL // less then or equal 
+<=      : REAL  x REAL  -> BOOL 
+>=      : INT   x INT   -> BOOL // greather then or equal 
+>=      : REAL  x REAL  -> BOOL  
+>       : INT   x INT   -> BOOL // greather then 
+>       : REAL  x REAL  -> BOOL 
++       : INT   x INT   -> INT  // addition
++       : REAL  x REAL  -> REAL 
+-       : INT   x INT   -> INT  // subtraction
+-       : REAL  x REAL  -> REAL 
+*       : INT   x INT   -> INT  // multiplication
+*       : REAL  x REAL  -> REAL 
+/       : INT   x INT   -> INT  // division
+/       : REAL  x REAL  -> REAL 
+
+Operators precendence (1 being the lowest) is defined as:
+1 : |, & 
+2 : ==, !=, <, <=, >, >=
+3 : +, -
+4 : *, /
+5 : !, -, +, () 
+
+
+Example of formula that will auto accept all saved games and requests
+for a random komi match with random discs between 18 and 24:
+
+saved | ( rand & komi & discs >= 18 & discs <= 24 )
+
+Formula can not be longer then 1024 characters.
+
+
+5.Oct.2000 (c) Igor Durdanovic, igord@research.nj.nec.com

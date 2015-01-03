@@ -1,0 +1,15 @@
+Checkers rules
+==============
+
+There are two piece types in checkers which move and capture on
+diagonals: checkers and kings. Checkers can only move/capture forwards
+and get promoted to kings once they have reached the opponent's base
+line. Kings can move/capture along all four diagonal directions.
+Pieces either move from one square to the next or capture by jumping
+over opponent's pieces landing right behind them on an empty
+square. Captures are mandatory and have to be completed. If several
+capture sequences exist the player is free to pick any of them. The
+player with no legal moves loses the game. The score is the material
+difference (checkers and kings both count 1). In case the winner has
+fewer pieces, (s)he wins by one point.
+

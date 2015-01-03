@@ -1,0 +1,95 @@
+salias A salias $
+A ,        t $_recv $
+A .        t $_send $
+A A        salias $
+A H        shistory
+A a        alias $
+A b        bell  $
+A c        chann $
+A f        finger $
+A fr       v _tmp $_send;, $;v _send $_tmp
+A ft       v _tmp $_send;t $;v _send $_tmp
+A g        group  $
+A h        history $
+A i        ignore  $
+A ki       ts tell $
+A kim      ts tell $_match $
+A m        mux $
+A ms       v _service
+A msa      v _service /ams
+A msck     v _service /cks
+A mso      v _service /os
+A n        notify  $
+A p        v _pfix $
+A q        quit   $
+A r        repeat $
+A sm       v _match $
+A st       v _type  $
+A t        tell   $
+A ta       ts ask $
+A tac      ts accept $
+A tas      ts assess $
+A tat      ts assess $_type $
+A td       ts decline $
+A tfa      ts aform $
+A tfd      ts dform $
+A tm       ts match $
+A tmm      ts moves  $_match $
+A tmo      ts moves $
+A to       ts match $
+A to+      ts watch + $
+A to-      ts watch - $
+A tp       ts play $
+A tpm      ts play $_match $
+A tr       ts rank $
+A trt      ts rank $_type $
+A ts       t $_service $
+A tt       ts top $
+A ttt      ts top $_type $
+A tw       ts who $
+A twt      ts who $_type $
+A u        uptime
+A v        var $
+A ve       verbose $
+A w        who
+A wi       ts tell o $
+A wim      ts tell o $_match $
+A y        yell $
+A yell     tell .chat $
+A sti      stat_inp $
+A sto      stat_out $
+A stu      stat_user $
+
+ts salias A salias $
+ts A A        salias $
+ts A H        shistory
+ts A a        accept $
+ts A b        break $
+ts A c        cancel $
+ts A d        decline $
+ts A f        finger $
+ts A g        group $
+ts A h        history $
+ts A i        ignore $
+ts A l        look $
+ts A m        match $
+ts A n        notify $
+ts A o        open $
+ts A r        request $
+ts A s        stored $
+ts A t        track $
+ts A u        uptime $
+ts A w        watch $
+ts A sti      stat_inp $
+ts A sto      stat_out $
+ts A stu      stat_user $
+ts A str      stat_request $
+ts A stm      stat_match $
+
+ts stored +
+ts notify +
+ts track +
+ts ignore +
+ts request +
+ts watch +
+ts notify + *

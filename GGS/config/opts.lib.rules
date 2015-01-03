@@ -1,0 +1,115 @@
+# (C) Igor Durdanovic -- [bof] .opts.lib.rules
+
+# sed 
+
+SEDFLT = ../../config/opts.sed
+
+# paths
+
+SRCDIR = src
+MKFDIR = mkf
+OBJDIR = obj
+LIBDIR = lib
+
+# files
+
+MAIN  = lib$(NAME).so
+
+CWD   = $(shell "pwd")
+SRC_S = $(wildcard $(SRCDIR)/*.C)
+MKF_S = $(patsubst $(SRCDIR)/%.C, $(MKFDIR)/%.m, $(SRC_S))
+OBJ_S = $(patsubst $(SRCDIR)/%.C, $(OBJDIR)/%.o, $(SRC_S))
+
+# compile variants
+
+PREPROC = $(CC)  $(CC_ARGS) -E $< -o 
+DEPEND  = $(CPP) $(CC_ARGS) -M $<
+ASMCC   = $(CC)  $(CC_ARGS) -S $< -o
+COMPILE = $(CC)  $(CC_ARGS) -fPIC -c $< -o
+LINK    = $(CC)  $(CC_FLAGS) $(LD_ARGS) -shared -Wl,-soname,$(MAIN) $(OBJ_S) -o 
+
+# meta rules
+
+%.i: $(SRCDIR)/%.C
+	@ echo 		$@
+	@ $(PREPROC) 	$@
+
+%.s: $(SRCDIR)/%.C
+	@ echo 		$@
+	@ $(ASMCC) 	$@
+
+$(MKFDIR)/%.m: $(SRCDIR)/%.C
+	@ echo		$@
+	@ $(DEPEND) >	$@
+	@ echo "	@ echo $(patsubst $(SRCDIR)/%.C, $(OBJDIR)/%.o, $<)" >> $@
+	@ echo "	@ $(COMPILE) $(patsubst $(SRCDIR)/%.C, $(OBJDIR)/%.o, $<)" >> $@
+	@ echo "" >> 	$@
+	@ sed -f $(SEDFLT) $@ > $@.sed
+	@ mv $@.sed $@
+
+$(OBJDIR)/%.o: $(MKFDIR)/%.m
+	+ @ make -s -f	$<
+
+$(LIBDIR)/%: 
+	+ @ make -s -f $(MKFDIR)/Makefile.mak
+
+# main lib rules
+
+all::	$(MKFDIR)/Makefile.mak
+	+ @ make -s -f $(MKFDIR)/Makefile.mak
+
+mkf::	$(MKF_S)
+
+obj::	mkf $(OBJ_S)
+
+lib::	$(LIBDIR)/$(MAIN)
+	+ @ make -s -f $(MKFDIR)/Makefile.mak
+
+$(MKFDIR)/Makefile.mak:	mkf
+	@ rm -f $@
+	@ echo 	$@
+	@ echo "# (C) Igor Durdanovic, [bof] Makefile.mak" > $@
+	@ echo "" >> $@
+	@ echo "$(LIBDIR)/$(MAIN):	$(OBJ_S)" >> $@
+	@ echo "	@ echo $(LIBDIR)/$(MAIN)" >> $@
+	@ echo "	@ $(LINK) $(LIBDIR)/$(MAIN)" >> $@
+	@ echo "" >> $@
+	@ cat $(MKFDIR)/*.m >> $@
+	@ echo "" >> $@
+	@ echo "# (C) Igor Durdanovic, [eof] Makefile.mak" >> $@
+
+help::
+	@ echo "make [echo|dir|clean|bak|zip|all|mkf|obj|lib]"
+
+echo::
+	@ echo $(CWD)
+	@ echo $(PREPROC)
+	@ echo $(COMPILE)
+	@ echo $(LINK)
+	@ echo "SRC_S: " $(SRC_S)
+	@ echo "MKF_S: " $(MKF_S)
+	@ echo "OBJ_S: " $(OBJ_S)
+
+dir::	
+	@ mkdir -p $(LIBDIR)
+	@ mkdir -p $(OBJDIR)
+	@ mkdir -p $(MKFDIR)
+
+
+clean::	bak
+	@ rm -rf $(LIBDIR)/* $(OBJDIR)/* $(MKFDIR)/*
+
+bak::
+	@ rm -f *~ $(SRCDIR)/*~ msg/*~
+
+clean-log::
+	@ rm -f log/*
+
+trunc-log::
+	@ ../../bin/make-trunc-log.sh
+
+backup::
+	@ ../../bin/make-backup.sh
+
+export::
+	@ ../../bin/make-export.sh
