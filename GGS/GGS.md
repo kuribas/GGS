@@ -2,7 +2,7 @@ This is a short introduction to help getting started
 with playing Shogi Variants at the Generic Game Server
 quickly. For more info, look at the homepage for GGS:
 
-http://external.nj.nec.com/homepages/igord/usrman.htm
+https://skatgame.net/mburo/ggs/
 
 
 Introduction:
