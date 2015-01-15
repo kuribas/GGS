@@ -74,7 +74,7 @@ protected:
   int overflow( int c );
 
 private:
-  static char* MethodStr[];
+  static const char* MethodStr[];
 
   char* _Zarr; // format: Clen : byte2, Dlen : byte2, array : byte*
   char* _Zptr; // pointer to end of used space

@@ -64,7 +64,7 @@ int sockbuf::connect(const string& sServer, int nPort) {
 	HOSTENT *hostent;
 	PROTOENT *protoent;
 	SOCKADDR_IN sa;
-	char *sProtocol="tcp";
+	const char *sProtocol="tcp";
 
 	if (err)
 		return err;

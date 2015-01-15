@@ -42,7 +42,7 @@ extern "C" {
 
 using namespace std;
 
-char* IO_Buffer::MethodStr[] = { "none", "bzip2", "gzip" };
+const char* IO_Buffer::MethodStr[] = { "none", "bzip2", "gzip" };
 
 IO_Buffer::IO_Buffer( Method m, uint4 Max, IO* Device )
   : max(Max),
@@ -135,7 +135,7 @@ void IO_Buffer::Tappend( ostringstream& os )
   TSTAT;
 
   const string& s = os.str();
-  Tappend( s.data(), s.size() );
+  Tappend( s.data(), (uint4)s.size() );
 }
 
 void IO_Buffer::Tappend( ccptr file, bool /*EOL_eq_EOM*/ )

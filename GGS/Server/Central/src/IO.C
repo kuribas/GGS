@@ -37,7 +37,7 @@
 #include "TSTAT_Client.H"
 #endif
 
-char* IO::MssgName[] = { "connect", "disconnect", "message" };
+const char* IO::MssgName[] = { "connect", "disconnect", "message" };
 
 using namespace std;
 

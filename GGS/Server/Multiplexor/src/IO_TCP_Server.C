@@ -32,7 +32,7 @@
 #include "IO_TCP_Server.H"
 #include <cstring>
 
-char* IO_TCP_Server::ConnectionName[] = { "client", "server" };
+const char* IO_TCP_Server::ConnectionName[] = { "client", "server" };
 
 using namespace std;
 

@@ -116,7 +116,7 @@ EXE_Client::~EXE_Client()
   vc_con << VCTIME << " ~EXE_Client( " << cmds.size() << " )" << endl;
 }
 
-void EXE_Client::add( cptr Name, Command Proc )
+void EXE_Client::add( ccptr Name, Command Proc )
 {
   cmds += EXE_Cmd( Name, Proc );
 }

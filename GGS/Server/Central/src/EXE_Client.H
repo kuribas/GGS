@@ -117,7 +117,7 @@ private:
   
   EXE_Cmds cmds;
 
-  void add( cptr Name, Command Proc );
+  void add( ccptr Name, Command Proc );
 
   void tell_send( IO_TCP_Client& who, const String& text );
 

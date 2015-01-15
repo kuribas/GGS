@@ -69,7 +69,7 @@ public:
   static ccptr mssg_str( MSSG m ) { return MssgName[m]; }
   
 protected:
-  static char* MssgName[];
+  static const char* MssgName[];
 
   IO_Buffer send_buff;
   IO_Buffer recv_buff;

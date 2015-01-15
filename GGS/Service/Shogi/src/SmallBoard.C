@@ -1,5 +1,7 @@
 #include "ShogiImpl.H"
 #include "Moves.H"
+#include <iostream>
+#include <string.h>
 
 #define MAX_BOARD_SIZE (13 * 13)
 #define MAX_CAPTURES 20
@@ -13,26 +15,21 @@ bool SmallBoard::legal_move(Move &mv)
    Square tmpSquares[MAX_BOARD_SIZE];
    int tmpCaptures[2][MAX_CAPTURES];
    SmallBoard tmpBoard(tmpSquares, tmpCaptures[0], tmpCaptures[1]);
+
+   if(mv.type == Move::DROP)
+      return legal_drop(mv);
       
-   if(mv.to.x >= type->width || mv.to.y >= type->height)
+   if(mv.type != Move::SIMPLE)
       return false;
 
-   if(mv.drop)
-      return (type->has_prop(HAS_DROPS) && legal_drop(mv));
-
-   if(side_at(mv.to.x, mv.to.y) == current_side ||
-      side_at(mv.from.x, mv.from.y) != current_side)
+   if(side_at(mv.to) == current_side ||
+      side_at(mv.from) != current_side)
       return false;
        
-   piece = piece_at(mv.from.x, mv.from.y);
+   piece = piece_at(mv.from);
 
-   for(i = 0; piece->moves[i]; i++) {
-       if(piece->moves[i]->is_valid(this, mv.from.x, mv.from.y,
-				    mv.to.x, mv.to.y, current_side))
-	  goto cont;
-   }
-   return false;
- cont:
+   if(!valid_piece_move(piece, mv, current_side))
+      return false;
 
    tmpBoard = *this;
        
@@ -40,26 +37,31 @@ bool SmallBoard::legal_move(Move &mv)
    if(tmpBoard.in_check(current_side))
       return false;
 	   
-   if(type->has_prop(PROM_BY_CAPTURE) || type->has_prop(NO_PROM))
-      return true;
-   else if(mv.promote) {
-       if (!in_promotion_zone(mv, current_side))
-	  return false;
-
-       if(!piece->promote_to)
-	  return false;
+   if(type->has_prop(PROM_BY_CAPTURE))
+   {
+       if(piece->promote_to &&
+	  !empty_square(mv.to))
+	  promote_next = MUST_PROMOTE;
+       else
+	  promote_next = MUST_STAY;
    }
+   else if (type->has_prop(NO_PROM))
+      promote_next = MUST_STAY;
    else if(piece->promote_to &&
-	    in_promotion_zone(mv, current_side))
+	   in_promotion_zone(mv, current_side))
    {
        if(type->has_prop(MUST_PROM))
-	  return false;
-
-       for(i = 0; piece->moves[i]; i++) {
-	   if(piece->moves[i]->has_board_moves(&tmpBoard, mv.to.x, mv.to.y, current_side))
-	      return true;
-       } return false;
+	  promote_next = MUST_PROMOTE;
+       else
+       {
+	   promote_next = MUST_PROMOTE;
+	   for(i = 0; piece->moves[i]; i++) {
+	       if(piece->moves[i]->has_board_moves(tmpBoard, mv.to.x, mv.to.y, current_side))
+		  promote_next = CAN_PROMOTE;
+	   }
+       }
    }
+   else promote_next = MUST_STAY;
 	    
    return true;
 }
@@ -72,8 +74,11 @@ bool SmallBoard::legal_drop(Move &mv)
    Square tmpSquares[MAX_BOARD_SIZE];
    int tmpCaptures[2][MAX_CAPTURES];
    SmallBoard tmpBoard(tmpSquares, tmpCaptures[0], tmpCaptures[1]);
+
+   if (!type->has_prop(HAS_DROPS))
+      return false;
    
-   if(!empty_square(mv.to.x, mv.to.y))
+   if(!empty_square(mv.to))
       return false;
    
    piece = type->pieces[mv.piece];
@@ -93,13 +98,13 @@ bool SmallBoard::legal_drop(Move &mv)
        return !tmpBoard.in_check(current_side);
    }
          
-   if(piece->promote_from || piece->has_prop(KING))
+   if(piece->promote_from || piece->has_prop(Piece::KING))
       return false;
 
    if(get_capture(mv.piece, current_side) == 0)
       return false;
    
-   if(piece->has_prop(PAWN) &&
+   if(piece->has_prop(Piece::PAWN) &&
       pawns_on_column(mv.to.x, current_side) == ((SmallBoard::Type *)type)->max_pawns_on_column)
       return false;
 
@@ -110,16 +115,16 @@ bool SmallBoard::legal_drop(Move &mv)
       return false;
 
    for(i = 0; piece->moves[i]; i++) {
-       if(piece->moves[i]->has_board_moves(&tmpBoard, mv.to.x, mv.to.y, current_side))
+       if(piece->moves[i]->has_board_moves(tmpBoard, mv.to.x, mv.to.y, current_side))
 	  goto cont;
    } return false;
  cont:
 
-   if(piece->has_prop(PAWN) && !type->has_prop(PAWNDROP_CAN_MATE)) {
+   if(piece->has_prop(Piece::PAWN) && !type->has_prop(PAWNDROP_CAN_MATE)) {
        int y = mv.to.y + (current_side == BLACK ? -1 : 1);
        
        if(tmpBoard.side_at(mv.to.x, y) == otherside(current_side) &&
-	  tmpBoard.piece_at(mv.to.x, y)->has_prop(KING) && 
+	  tmpBoard.piece_at(mv.to.x, y)->has_prop(Piece::KING) && 
  	  tmpBoard.is_finished())
 	  return false;
    }
@@ -141,12 +146,14 @@ int SmallBoard::pawns_on_column(int x, int side)
 
 bool SmallBoard::in_check(int side, Point *checking_piece)
 {
-   int x, y, i, other, kx, ky;
+   Move mv;
+   int other, x, y;
    const Piece *p;
    
    other = otherside(side);
-   kx = king[side].x;
-   ky = king[side].y;
+   mv.type = Move::SIMPLE;
+   mv.to.x = king[side].x;
+   mv.to.y = king[side].y;
 
    for(y = 0; y < type->height; y++)
       for(x = 0; x < type->width; x++)
@@ -154,12 +161,13 @@ bool SmallBoard::in_check(int side, Point *checking_piece)
 	  if(side_at(x, y) != other) continue;
 	  p = piece_at(x, y);
 	  
-	  for(i = 0; p->moves[i]; i++)
-	     if(p->moves[i]->is_valid(this, x, y, kx, ky, other)) {
-		 if(checking_piece) {
-		     checking_piece->x = x;
-		     checking_piece->y = y; }
-		 return true; }
+	  mv.from.x = x;
+	  mv.from.y = y;
+	  if(valid_piece_move(p, mv, other)) {
+	      if(checking_piece) {
+		  checking_piece->x = x;
+		  checking_piece->y = y; }
+	      return true; }
       }
    return false;
 }
@@ -177,7 +185,7 @@ bool SmallBoard::is_finished()
    int tmpCaptures[2][MAX_CAPTURES];
    SmallBoard tmpBoard(tmpSquares, tmpCaptures[0], tmpCaptures[1]);
    
-   mv.drop = false;
+   mv.type = Move::SIMPLE;
 
    for(y = 0; y < type->height; y++)
       for(x = 0; x < type->width; x++)
@@ -192,11 +200,12 @@ bool SmallBoard::is_finished()
 
 	  movelist.clear();
 	  for(i = 0; piece->moves[i]; i++)
-	     piece->moves[i]->valid_moves(this, x, y, current_side, movelist);
+	     ((MoveWithCheck *)(piece->moves[i]))->
+	       valid_moves(*this, x, y, current_side, movelist);
 	  
 	  for(i = 0; i < movelist.size(); i++) {
 	      if(!on_board(movelist[i].x, movelist[i].y) ||
-		 side_at(movelist[i].x, movelist[i].y) == current_side)
+		 side_at(movelist[i]) == current_side)
 		 continue;
 	      
 	      tmpBoard = *this;
@@ -263,7 +272,7 @@ bool SmallBoard::drop_between_check(Point checking_piece)
    }
 
    mv.piece = i;
-   mv.drop = true;
+   mv.type = Move::DROP;
 
    dx = kx - checking_piece.x;
    dy = ky - checking_piece.y;
@@ -274,7 +283,7 @@ bool SmallBoard::drop_between_check(Point checking_piece)
    mv.to.x = checking_piece.x + dx;
    mv.to.y = checking_piece.y + dy;
    while(! (mv.to.x == kx && mv.to.y == ky)) {
-       if(legal_drop(mv));
+       if(legal_drop(mv))
 	  return true;
        mv.to.x += dx;
        mv.to.y += dy;
@@ -287,15 +296,15 @@ void SmallBoard::do_move(Move &mv)
    const Piece *piece, *old;
    int i;
    
-   if(mv.drop) { do_drop(mv); return; }
+   if(mv.type == Move::DROP) { do_drop(mv); return; }
 
-   piece = piece_at(mv.from.x, mv.from.y);
+   piece = piece_at(mv.from);
 
    if(type->has_prop(NO_PROM)) {
        /* extra move for whale shogi
 	  This is not really promotion, just a trick to
 	  give the dolfin an extra move when reaching the final row */
-       if(piece->has_prop(PAWN)) {
+       if(piece->has_prop(Piece::PAWN)) {
 	   if(mv.to.y == (current_side == BLACK ? 0 : type->height - 1))
 	      piece = piece->promote_to; //promote
 	   else if(mv.from.y == (current_side == BLACK ? 0 : type->height - 1))
@@ -303,7 +312,7 @@ void SmallBoard::do_move(Move &mv)
        }
    } else if(type->has_prop(PROM_BY_CAPTURE)) {
        // micro shogi: promote when capturing a piece
-       if(side_at(mv.to.x, mv.to.y) != NO_SIDE) {
+       if(!empty_square(mv.to)) {
 	   if(piece->promote_to)
 	      piece = piece->promote_to;
 	   else if(piece->promote_from)
@@ -315,12 +324,14 @@ void SmallBoard::do_move(Move &mv)
    squares[xy_to_index(mv.from.x, mv.from.y)].side = NO_SIDE;
 
    if(type->has_prop(HAS_DROPS) &&
-      side_at(mv.to.x, mv.to.y) != NO_SIDE) {
-       old = piece_at(mv.to.x, mv.to.y);
+      !empty_square(mv.to)) {
+       old = piece_at(mv.to);
 
        if(old->promote_from)
 	  old = old->promote_from;
 
+       if(old->num < ((SmallBoard::Type *)type)->captures_size)
+	  return;
        captures[current_side][old->num]++;
    }
 
@@ -328,7 +339,7 @@ void SmallBoard::do_move(Move &mv)
    squares[i].side = current_side;
    squares[i].piece = piece->num;
 
-   if(piece->has_prop(KING)) {
+   if(piece->has_prop(Piece::KING)) {
        king[current_side].x = mv.to.x;
        king[current_side].y = mv.to.y;
    }
@@ -347,12 +358,42 @@ void SmallBoard::do_drop(Move &mv)
 	     piece->promote_from->num :
 	     mv.piece);
    
+   if(capnum < ((SmallBoard::Type *)type)->captures_size)
+      return;
+       
    captures[current_side][capnum]--;
    squares[i].side = current_side;
    squares[i].piece = mv.piece;
    
    current_side = otherside(current_side);
 }
+
+Board *SmallBoard::duplicate()
+{
+   return (Board *) new SmallBoard(*this);
+}
+
+SmallBoard::SmallBoard(const SmallBoard &board)
+{
+   type = board.type;
+   squares = new Square[type->width * type->height];
+
+   memcpy(squares, board.squares, type->height * type->width * sizeof(Square));
+   current_side = board.current_side;
+   game_result = board.game_result;
+   promote_next = board.promote_next;
+   
+   external_storage = false;
+   captures[0] = new int[((SmallBoard::Type *)type)->captures_size];
+   captures[1] = new int[((SmallBoard::Type *)type)->captures_size];
+
+   memcpy(captures[0], board.captures[0], ((SmallBoard::Type *)type)->captures_size * sizeof(int));
+   memcpy(captures[1], board.captures[1], ((SmallBoard::Type *)type)->captures_size * sizeof(int));
+   
+   king[0] = board.king[0];
+   king[1] = board.king[1];
+}
+
 
 SmallBoard::SmallBoard(Square *board, int *captures1, int *captures2)
 {
@@ -390,7 +431,7 @@ void SmallBoard::operator=(const SmallBoard &bd)
    current_side = bd.current_side;
    king[0] = bd.king[0];
    king[1] = bd.king[1];
-
+   
    memcpy(squares, bd.squares, sizeof(Square) * type->width * type->height);
    memcpy(captures[0], bd.captures[0], ((SmallBoard::Type *)type)->captures_size * sizeof(int));
    memcpy(captures[1], bd.captures[1], ((SmallBoard::Type *)type)->captures_size * sizeof(int));
@@ -402,8 +443,8 @@ void SmallBoard::find_kings() {
    for(y = 0; y < type->height; y++)
       for(x = 0; x < type->width; x++)
       {
-	  if(side_at(x, y) == NO_SIDE ||
-	     !piece_at(x, y)->has_prop(KING))
+	  if(empty_square(x, y) ||
+	     !piece_at(x, y)->has_prop(Piece::KING))
 	     continue;
 
 	  side = side_at(x, y);
@@ -420,6 +461,16 @@ void SmallBoard::init_setup()
    current_side = BLACK;
 
    find_kings();
+}
+
+void SmallBoard::set_pos(Square *pos, int *cap_black, int *cap_white, int to_move)
+{
+   memcpy(squares, type->setup, sizeof(Square) * type->width * type->height);
+   memcpy(captures[0], cap_black, ((SmallBoard::Type *)type)->captures_size * sizeof(int));
+   memcpy(captures[1], cap_white, ((SmallBoard::Type *)type)->captures_size * sizeof(int));
+   current_side = to_move;
+
+   update_pos();
 }
 
 void SmallBoard::write_ggf(ostream &os, bool one_line)
@@ -440,20 +491,10 @@ void SmallBoard::write_ggf(ostream &os, bool one_line)
    write_board_ggf(os, one_line);
 }
 
-bool SmallBoard::read_pos(istream &is)
+void SmallBoard::update_pos()
 {
-   int i, x;
-
-   if(type->has_prop(HAS_DROPS))
-   {
-       for(i = 0; i < ((SmallBoard::Type *)type)->captures_size; i++)
-	  is >> captures[0][i];
-       for(i = 0; i < ((SmallBoard::Type *)type)->captures_size; i++)
-	  is >> captures[1][i];
-   }
-   if(!read_board_pos(is))
-      return false;
-
+   int x;
+   
    if(type->has_prop(NO_PROM)) {
        // Whale shogi: if the pawn is on the last rank,
        // it gets the promoted form.
@@ -466,7 +507,7 @@ bool SmallBoard::read_pos(istream &is)
        }
 
        for(x = 0; x < type->width; x++) {
-	   i = xy_to_index(x, type->height - 1);
+	   int i = xy_to_index(x, type->height - 1);
 	   if(squares[i].side != WHITE ||
 	      squares[i].piece != 0)
 	      continue;
@@ -476,6 +517,23 @@ bool SmallBoard::read_pos(istream &is)
    }
 
    find_kings();
+}
+
+bool SmallBoard::read_pos(istream &is)
+{
+   int i;
+
+   if(type->has_prop(HAS_DROPS))
+   {
+       for(i = 0; i < ((SmallBoard::Type *)type)->captures_size; i++)
+	  is >> captures[0][i];
+       for(i = 0; i < ((SmallBoard::Type *)type)->captures_size; i++)
+	  is >> captures[1][i];
+   }
+   if(!read_board_pos(is))
+      return false;
+
+   update_pos();
    return true;
 }
 
@@ -488,13 +546,28 @@ void SmallBoard::write(ostream &os)
        os << "* in hand: ";
        for(i = 0; i < ((SmallBoard::Type *)type)->captures_size; i++)
 	  if(captures[0][i])
-	     os << type->pieces[i]->name << ": " << captures[0][i] << " ";
+	  {
+	      os << type->pieces[i]->name;
+
+	      if(type->has_prop(DROP_ANY) &&
+		 type->pieces[i]->promote_to)
+		 os << '/' << type->pieces[i]->promote_to->name;
+
+	      os << ": " << captures[0][i] << " ";
+	  }
               
        os << EOL << "O in hand: ";
        for(i = 0; i < ((SmallBoard::Type *)type)->captures_size; i++)
 	  if(captures[1][i])
-	     os << type->pieces[i]->name << ": " << captures[1][i] << " ";
-       
+	  {
+	      os << type->pieces[i]->name;
+
+	      if(type->has_prop(DROP_ANY) &&
+		 type->pieces[i]->promote_to)
+		 os << '/' << type->pieces[i]->promote_to->name;
+
+	      os << ": " << captures[1][i] << " ";
+	  }
        os << EOL << EOL;
    }
    write_board(os);

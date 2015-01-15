@@ -1,7 +1,6 @@
 #ifndef _MOVES_H_
 #define _MOVES_H_
 
-#include "ShogiImpl.H"
 #include <vector>
 
 enum
@@ -40,14 +39,14 @@ enum
 class BasicMove
 {
  public:
-   virtual bool is_valid(const Board *pos,
-			 int from_x, int from_y,
-			 int to_x, int to_y, int side) = 0;
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side) = 0;
 
-   virtual bool has_board_moves(const Board *pos,
+   virtual bool has_board_moves(const Board &pos,
 				int from_x, int from_y, int side) = 0;
 
-    protected:
+ protected:
    inline int reverse_direction(int direction);
    inline bool normalize(int &dx, int &dy);
    int has_direction(int flags, int dx, int dy)
@@ -93,11 +92,11 @@ class MoveWithCheck : public BasicMove
 {
  public:
    // true if this piece could attack the destination square
-   virtual bool can_reach(const Board *pos,
-			 int from_x, int from_y,
-			 int to_x, int to_y, int side) = 0;
+   //virtual bool can_reach(const Board *pos,
+   //                       int from_x, int from_y,
+   //			    int to_x, int to_y, int side) = 0;
 
-   virtual void valid_moves(const Board *pos,
+   virtual void valid_moves(const Board &pos,
 		    int from_x, int from_y, int side,
 		    vector<Point> &movelist) = 0;
 };
@@ -114,14 +113,14 @@ class ShortMove : public MoveWithCheck
  public:
    ShortMove(int moveinfo_p);
 
-   virtual bool is_valid(const Board *pos,
-			 int from_x, int from_y,
-			 int to_x, int to_y, int side);
-   virtual bool can_reach(const Board *pos,
-			  int from_x, int from_y, int to_x, int to_y, int side);
-   virtual bool has_board_moves(const Board *pos,
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+   //virtual bool can_reach(const Board &pos,
+   //			  int from_x, int from_y, int to_x, int to_y, int side);
+   virtual bool has_board_moves(const Board &pos,
 				int from_x, int from_y, int side);
-   void valid_moves(const Board *pos,
+   void valid_moves(const Board &pos,
 		    int from_x, int from_y, int side,
 		    vector<Point> &movelist);
 
@@ -137,15 +136,16 @@ class LongMove : public MoveWithCheck
  public:
    LongMove(int moveinfo_p);
 
-   virtual bool is_valid(const Board *pos,
-			 int from_x, int from_y,
-			 int to_x, int to_y, int side);
-   virtual bool can_reach(const Board *pos,
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   /*virtual bool can_reach(const Board &pos,
 			  int from_x, int from_y,
-			  int to_x, int to_y, int side);
-   virtual bool has_board_moves(const Board *pos,
+			  int to_x, int to_y, int side);*/
+   virtual bool has_board_moves(const Board &pos,
 				int from_x, int from_y, int side);
-   void valid_moves(const Board *pos,
+   void valid_moves(const Board &pos,
 		    int from_x, int from_y, int side,
 		    vector<Point> &movelist);
 
@@ -160,15 +160,17 @@ class KnightMove : public MoveWithCheck
 {
  public:
    KnightMove(int info);
-   virtual bool is_valid(const Board *pos,
-			  int from_x, int from_y,
-			  int to_x, int to_y, int side);
-    virtual bool can_reach(const Board *pos,
-			   int from_x, int from_y,
-			   int to_x, int to_y, int side);
-    virtual bool has_board_moves(const Board *pos,
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   //    virtual bool can_reach(const Board &pos,
+   //			   int from_x, int from_y,
+   //			   int to_x, int to_y, int side);
+   //
+    virtual bool has_board_moves(const Board &pos,
 				 int from_x, int from_y, int side);
-   void valid_moves(const Board *pos,
+   void valid_moves(const Board &pos,
 		    int from_x, int from_y, int side,
 		    vector<Point> &movelist);
  private:
@@ -183,15 +185,16 @@ class JumpMove : public MoveWithCheck
  public:
    JumpMove(int moveinfo);
    
-   virtual bool is_valid(const Board *pos,
-			int from_x, int from_y,
-			int to_x, int to_y, int side);
-   virtual bool can_reach(const Board *pos,
-			  int from_x, int from_y,
-			  int to_x, int to_y, int side);
-   virtual bool has_board_moves(const Board *pos,
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   //   virtual bool can_reach(const Board &pos,
+   //			  int from_x, int from_y,
+   //			  int to_x, int to_y, int side);
+   virtual bool has_board_moves(const Board &pos,
 				int from_x, int from_y, int side);
-   void valid_moves(const Board *pos,
+   void valid_moves(const Board &pos,
 		    int from_x, int from_y, int side,
 		    vector<Point> &movelist);
  private:
@@ -206,20 +209,150 @@ class NumMove : public MoveWithCheck
  public:
    NumMove(int moveinfo, int num);
    
-   virtual bool is_valid(const Board *pos,
-			int from_x, int from_y,
-			int to_x, int to_y, int side);
-   virtual bool can_reach(const Board *pos,
-			  int from_x, int from_y,
-			  int to_x, int to_y, int side);
-   virtual bool has_board_moves(const Board *pos,
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   //   virtual bool can_reach(const Board &pos,
+   //			  int from_x, int from_y,
+   //			  int to_x, int to_y, int side);
+   virtual bool has_board_moves(const Board &pos,
 				int from_x, int from_y, int side);
-   void valid_moves(const Board *pos,
+   void valid_moves(const Board &pos,
 		    int from_x, int from_y, int side,
 		    vector<Point> &movelist);
  private:
    int moveinfo[2];
    int num;
+};
+
+class AreaMove : public BasicMove
+{
+ private:
+   int num;
+   
+ public:
+   AreaMove(int num);
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   virtual bool has_board_moves(const Board &pos,
+				int from_x, int from_y, int side);
+ private:
+   bool area_two_between(const Board &pos,
+				   int from_x, int from_y,
+				   int dx, int dy);
+};
+
+class DiaghookMove : public BasicMove
+{
+   int moveinfo[2];
+   
+ public:
+   DiaghookMove(int moveinfo);
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   virtual bool has_board_moves(const Board &pos,
+				int from_x, int from_y, int side);
+};
+
+class HookMove : public BasicMove
+{
+ public:
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   virtual bool has_board_moves(const Board &pos,
+				int from_x, int from_y, int side);
+};
+
+class MoveoverMove : public BasicMove
+{
+ private:
+   int num;
+   int moveinfo[2];
+   
+ public:
+   MoveoverMove(int info, int num);
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   virtual bool has_board_moves(const Board &pos,
+				int from_x, int from_y, int side);
+};
+
+class IguiMove : public BasicMove
+{
+ public:
+   IguiMove() {}
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   virtual bool has_board_moves(const Board &pos,
+				int from_x, int from_y, int side);
+};
+
+class LionMove : public BasicMove
+{
+ private:
+   int max_moves;
+   
+ public:
+   LionMove(int max_moves);
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   virtual bool has_board_moves(const Board &pos,
+				int from_x, int from_y, int side);
+};
+
+class SmalllionMove : public BasicMove
+{
+ private:
+   int moveinfo[2];
+   
+ public:
+   SmalllionMove(int moveinfo);
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   virtual bool has_board_moves(const Board &pos,
+				int from_x, int from_y, int side);
+};
+
+class EmperorMove : public BasicMove
+{
+ public:
+   EmperorMove() {}
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   virtual bool has_board_moves(const Board &pos,
+				int from_x, int from_y, int side);
+};
+
+class GeneralMove : public BasicMove
+{
+ private:
+   int moveinfo[2], rank;
+
+ public:
+   GeneralMove(int moveinfo, int rank);
+   virtual bool is_valid(Board &pos,
+			 Board::Move &mv,
+			 int side);
+
+   virtual bool has_board_moves(const Board &pos,
+				int from_x, int from_y, int side);
 };
 
 #include "moves_decl.inc"

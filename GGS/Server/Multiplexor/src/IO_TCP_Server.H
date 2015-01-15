@@ -42,7 +42,7 @@ public:
   ccptr io_connection_str() const { return ConnectionName[connection]; }
   
 private:
-  static char* ConnectionName[];
+  static const char* ConnectionName[];
   
   IO_Buffer::Method method;
   Connection        connection;

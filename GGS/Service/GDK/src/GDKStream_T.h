@@ -5,7 +5,7 @@
 
 template <class TRules>
 void CServiceGDK<TRules>::HandleJoin(const typename CSG<TRules>::TMsgJoin& msg) {
-  BaseJoin(msg);
+  this->BaseJoin(msg);
   MakeMoveIfNeeded(msg.idg);
 }
 
@@ -19,12 +19,12 @@ CServiceGDK<TRules>::CServiceGDK(ggsstream* apgs) : CSG<TRules>(apgs)  {
 template <class TRules>
 void CServiceGDK<TRules>::HandleUnknown(const typename CSG<TRules>::TMsgUnknown& msg) {
   cout << "Unknown " << this->sLogin << " message: ";
-  Handle(msg);
+  this->Handle(msg);
 }
 
 template <class TRules>
 void CServiceGDK<TRules>::HandleUpdate(const typename CSG<TRules>::TMsgUpdate& msg) {
-	BaseUpdate(msg);
+	this->BaseUpdate(msg);
 	MakeMoveIfNeeded(msg.idg);
 }
 

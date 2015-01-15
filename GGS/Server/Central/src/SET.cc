@@ -56,7 +56,7 @@ template<class O>
 O* SET<O>::operator += ( const O& V )
 {
   iterator it = lower_bound( this->begin(), this->end(), V, SET_less< O, O >() );
-  if ( it == this->end() || !( *it == V) ) return &(*insert( it, V ));
+  if ( it == this->end() || !( *it == V) ) return &(*this->insert( it, V ));
   return &(*it);
 }
 

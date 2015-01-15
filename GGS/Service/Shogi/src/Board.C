@@ -1,5 +1,7 @@
 #include "ShogiImpl.H"
-#include <String.H>
+#include <string.h>
+#include <stdio.h>
+#include <iostream>
 
 extern SmallBoard::Type shogi_type,
   micro_type,
@@ -13,7 +15,7 @@ extern SmallBoard::Type shogi_type,
   heian_type,
   heiandai_type;
 
-const static SmallBoard::Type *small_types[] = {
+const SmallBoard::Type *small_types[] = {
    &shogi_type,
    &micro_type,
    &mini_type,
@@ -25,6 +27,29 @@ const static SmallBoard::Type *small_types[] = {
    &wa2_type,
    &heian_type,
    &heiandai_type};
+
+extern Board::Type sho_type,
+  chu_type,
+  dai_type,
+  tenjiku_type,
+  tenjiku2_type,
+  daidai_type,
+  makadaidai_type,
+  makadaidai2_type,
+  tai_type,
+  tai2_type;
+
+const Board::Type *large_types[] = {
+   &sho_type,
+   &chu_type,
+   &dai_type,
+   &tenjiku_type,
+   &tenjiku2_type,
+   &daidai_type,
+   &makadaidai_type,
+   &makadaidai2_type,
+   &tai_type,
+   &tai2_type};
 
 /*
 static inline
@@ -39,9 +64,15 @@ bool isalpha(int chr) {
 }
 */
 
-Board::Move::Move(const Board::Type *type_p)
+Board::~Board()
+{}
+
+Board *Board::duplicate()
+{}
+
+Board::Move::Move(const Board::Type *bdtype_p)
 {
-   type = type_p;
+   bdtype = bdtype_p;
 }
 
 bool Board::Move::read_square(const char *&mvs, Point &square)
@@ -58,13 +89,20 @@ bool Board::Move::read_square(const char *&mvs, Point &square)
        x = (x * 10) + *ptr - '0';
        ptr++; }
 
+   if(x == 0)
+      return false;
+   
    if(!isalpha(*ptr))
       return false;
 
-   square.x = type->width - x;
+   square.x = bdtype->width - x;
    square.y = *ptr - 'a';
-   mvs = ptr + 1;
 
+   if(square.x < 0 ||
+      square.y >= bdtype->height)
+      return false;
+
+   mvs = ptr + 1;
    return true;
 }
 
@@ -82,7 +120,7 @@ bool Board::Move::read_piece(const char *&mvs)
       name[i] = mvs[i];
    }
    name[i] = 0;
-   piecenum = type->num_from_name(name);
+   piecenum = bdtype->num_from_name(name);
 
    if(piecenum == -1)
       return false;
@@ -92,56 +130,88 @@ bool Board::Move::read_piece(const char *&mvs)
    return true;
 }
 
-bool Board::Move::parse(const string mvs)
+inline bool Board::Move::read_next_move(const char *&mvs, Point &sqr)
 {
-   const char *ptr = mvs.c_str();
-
-   if(read_piece(ptr))
-      piece_given = true;
-   else
-      piece_given = false;
-   
-   if(read_square(ptr, from))
-      square_given = true;
-   else
-      square_given = false;
-
-   if(!piece_given && !square_given)
-      return false;
-   
-   switch(*ptr) {
-     case '-':
-	drop = false; break;
-     case '*':
-	drop = true;
-	if(!piece_given || square_given)
-	   return false;
-	break;
-     default:
-	return false;
-   }
-   ptr++;
-
-   if(!read_square(ptr, to))
+   if(!read_square(mvs, sqr))
       return false;
 
-   if(*ptr == '+') {
+   if(*mvs == '+') {
        promote = true;
-       ptr++;
-   }else
-      promote = false;
-
-   if(*ptr != 0)
-      return false;
-
+       return (*++mvs == 0);
+   }
    return true;
 }
 
-Board *Board::new_board(sint4 type)
+bool Board::Move::parse(const string mvs)
 {
-   if(type < 0 || type > 10)return false;
+   const char *ptr = mvs.c_str();
+   promote = false;
 
-   return new SmallBoard(small_types[type]);
+   piece_given = read_piece(ptr);
+   square_given = read_square(ptr, from);
+
+   if(!piece_given && !square_given)
+      return false;
+
+   switch(*ptr++)
+   {
+     case '*':
+	type = DROP;
+	if(!piece_given || square_given)
+	   return false;
+
+	if(!read_square(ptr, to))
+	   return false;
+
+	return (*ptr == 0);
+     case '!':
+	if(*ptr == 0) {
+	    type = PASS;
+	    return true;
+	}
+	if(!read_square(ptr, to))
+	   return false;
+	
+	type = IGUI;
+	return (*ptr == 0);
+     case '-': break;
+     default:
+	return false;
+   }
+
+   if(!read_next_move(ptr, to))
+      return false;
+
+   if(*ptr == 0) {
+       type = SIMPLE; return true; }
+   if(*ptr != '-')
+      return false;
+   
+   if(!read_next_move(++ptr, to2))
+      return false;
+
+   if(*ptr == 0) {
+       type = DOUBLE; return true; }
+   if(*ptr != '-')
+      return false;
+
+   if(!read_next_move(++ptr, to3))
+      return false;
+
+   type = TRIPLE;
+   return (*ptr == 0);
+}
+
+Board *Board::new_board(int type)
+{
+   if(type < 0)
+      return NULL;
+   if(type < 11)
+      return new SmallBoard(small_types[type]);
+   else if(type < 21)
+      return new LargeBoard(large_types[type - 11]);
+   else
+      return NULL;
 }
 
 int Board::Type::num_from_name(const char *name) const
@@ -187,23 +257,30 @@ bool Board::update_move(Move &mv)
 {
    int x, y;
 
-   if(mv.drop || mv.square_given)
+   if(mv.type == Move::DROP || mv.square_given)
       return true;  // no need to update
 
    x = y = 0;
    return find_next_legal(x, y, mv);
 }
 
-/* return true if move describes one legal move */
-bool Board::one_legal_move(ostream &err, Move &mv)
+/* Return true if move describes one legal move
+   When the given only a piecename, there must
+   be exactly one piece for which this move is
+   legal.
+*/
+
+bool Board::one_legal_move(Move &mv)
 {
    int x, y;
+   
+   if(mv.type == Move::DROP)
+      return legal_move(mv);
    
    if(mv.square_given)
    {
        if(mv.piece_given) {
 	   if(squares[xy_to_index(mv.from.x, mv.from.y)].piece != mv.piece) {
-	       err << "No such piece at given square. ";
 	       return false; }
        }
        return legal_move(mv);
@@ -214,11 +291,8 @@ bool Board::one_legal_move(ostream &err, Move &mv)
       return false;
 
    if(find_next_legal(++x, y, mv))
-   {
-       err << "Ambiguous piece.  Use source square instead. ";
-       return false;
-   }
-
+      return false;
+   
    return true;
 }
 
@@ -262,6 +336,28 @@ void strdowncase(char *dest, const char *str)
    dest[i] = 0;
 }
 
+const Piece *Board::lookup_piece(const char *name)
+{
+   int piecenum;
+   const Piece *piece;
+
+   piecenum = type->num_from_name(name);
+   if(piecenum != -1)
+      piece = type->pieces[piecenum];
+   else {
+       if(name[0] != '+')
+	  return NULL;
+       
+       piecenum = type->num_from_name(name + 1);
+       if(piecenum == -1)
+	  return NULL;
+
+       piece = type->pieces[piecenum];
+       piece = piece->promote_to;
+   }
+   
+   return piece;
+}
 
 void Board::write_board(ostream &os)
 {
@@ -270,9 +366,20 @@ void Board::write_board(ostream &os)
    
    len = get_type()->name_max + 1;
 
+   os << "    ";
+   for(x = get_type()->width; x > 0; x--) {
+       sprintf(tmp, "%i", x);
+       write_aligned(os, tmp, len);
+   }
+   os << EOL;
+
+   os << "  +-";
+   for(x = get_type()->width * len; x > 0; x--) os << '-';
+   os << '+' << EOL;
+
    for(y = 0; y < get_type()->height; y++)
    {
-       os << (char)('a'+y) << " ";
+       os << (char)('a'+y) << " | ";
        for(x = 0; x < get_type()->width; x++)
        {
 	   switch(side_at(x, y)) {
@@ -288,10 +395,14 @@ void Board::write_board(ostream &os)
 		write_aligned(os, ((x+y) % 2 ? "-" : " "), len);
 	   }
        }
-       os << EOL;
+       os << "| " << (char)('a'+y) << EOL;
    }
 
-   os << "  ";
+   os << "  '-";
+   for(x = get_type()->width * len; x > 0; x--) os << '-';
+   os << '\'' << EOL;
+
+   os << "    ";
    for(x = get_type()->width; x > 0; x--) {
        sprintf(tmp, "%i", x);
        write_aligned(os, tmp, len);
@@ -308,7 +419,7 @@ void Board::write_square(ostream &os, int side,
 
 bool Board::read_square(istream &is, int pos)
 {
-   String s;
+   string s;
    char c;
    int piecenum;
 
@@ -341,8 +452,8 @@ void Board::write_board_ggf(ostream &os, bool one_line)
 {
    int x, y;
 
-   for(x = 0; x < type->width; x++) {
-       for(y = 0; y < type->height; y++) {
+   for(y = 0; y < type->height; y++) {
+       for(x = 0; x < type->width; x++) {
 	   switch (side_at(x, y)) {
 	     case BLACK:
 		os << "*" << piece_at(x, y)->name << " "; break;
@@ -353,7 +464,7 @@ void Board::write_board_ggf(ostream &os, bool one_line)
 	   }
        }
 	   //	  write_square(os, side_at(x,  y), piece_at(x, y));
-	   os << (one_line ? ' ' : EOL);
+       os << (one_line ? ' ' : EOL);
    }
    
    os << (current_side == BLACK ? "*" : "O");
@@ -363,9 +474,9 @@ bool Board::read_board_pos(istream &is)
 {
    int x, y;
    char c;
-   
-   for(x = 0; x < get_type()->width; x++) {
-       for(y = 0; y < get_type()->height; y++)
+
+   for(y = 0; y < get_type()->height; y++)
+      for(x = 0; x < get_type()->width; x++) {
 	  if(!read_square(is, xy_to_index(x, y))) {
 	      return false;
 	  }
@@ -374,7 +485,6 @@ bool Board::read_board_pos(istream &is)
    is >> c;
    if (c == '*') current_side = BLACK;
    else if (c == 'O') current_side = WHITE;
-   else ERR("illegal color to move");
-
+   
    return true;
 }

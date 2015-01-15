@@ -76,7 +76,7 @@ bool Shogi::legal_move(ostream &err, const string &mvs)
        err << "parse error in move";
        return false; }
 
-   bool ok = pos->one_legal_move(err, mv);
+   bool ok = pos->one_legal_move(mv);
    if (!ok) { err << "illegal move"; }
    return ok;
 }
@@ -140,7 +140,6 @@ const bool   RegularBoardGame::HAS_SYNCHRO   = true;
 const char * const RegularBoardGame::GAME_NAME = "Shogi";
 
 const char * const RegularBoardGame::LOGIN_SERVICE = "/shs";
-const char * const RegularBoardGame::PASSW_SERVICE = "blezebub";
 const char * const RegularBoardGame::LOGIN_SYSTEM  = " s.h.o.g.i ";
 
 

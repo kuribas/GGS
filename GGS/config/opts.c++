@@ -5,8 +5,7 @@ GCC = g++
 GCC_FLAGS = 									\
   -pipe 									\
   -Wall -Wuninitialized -W -Wundef						\
-  -O -g 								        \
-  -m32
+  -O -g 								        
 
 # 32 bit for database
 
