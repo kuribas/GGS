@@ -141,7 +141,7 @@ CPP::CPP()
   assert( sizeof(uint8) == 8 );
   assert( sizeof(real4) == 4 );
   assert( sizeof(real8) == 8 );
-  assert( sizeof(realC) == 12 );
+  //assert( sizeof(realC) == 12 );
 }
 
 static CPP _cpp_types; // check basic types

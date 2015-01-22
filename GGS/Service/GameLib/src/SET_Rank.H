@@ -41,7 +41,7 @@ public:
   std::istream& load ( std::istream& is );
 
 private:
-  static const String tag;
+  static ccptr tag;
 };
 
 #endif

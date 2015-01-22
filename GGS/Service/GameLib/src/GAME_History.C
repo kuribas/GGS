@@ -84,7 +84,7 @@ istream& History::load ( istream& is )
 
 //
 
-const String GAME_History::tag( "GAME_History" );
+ccptr GAME_History::tag = "GAME_History";
 
 bool GAME_History::operator() ( const String& Counter ) const
 {
@@ -129,7 +129,7 @@ ostream& GAME_History::save ( ostream& os ) const
 {
   TSTAT;
 
-  tag.tag_save( os );
+  tag_save( tag, os );
   
   os.write( ccptr(&len), sizeof(len) );
   vec.save( os );
@@ -141,7 +141,7 @@ istream& GAME_History::load ( istream& is )
 {
   TSTAT;
   
-  if (! tag.tag_chck( is ) ) { vc_con << VCFL; System::exit(-1); }
+  if (! tag_chck( tag, is ) ) { vc_con << VCFL; System::exit(-1); }
 
   uint4 Len;
   is.read( cptr(&Len), sizeof(Len) );

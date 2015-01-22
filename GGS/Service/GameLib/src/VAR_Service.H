@@ -101,7 +101,7 @@ protected:
   mutable bool     dirty;
 
 private:
-  static VAR_Client svar;
+  VAR_Client svar;
 
   friend bool IO_TCP_Service::work( IO_Buffer& B );
 

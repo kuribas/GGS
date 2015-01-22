@@ -107,7 +107,7 @@ istream& Rank::load ( istream& is )
 
 //
 
-const String VC_Rank::tag( "VC_Rank" );
+ccptr VC_Rank::tag = "VC_Rank";
 
 VC_Rank::VC_Rank( const String& ID )
   : tid(ID), avg(0), dev(0)
@@ -313,7 +313,7 @@ ostream& VC_Rank::save ( ostream& os ) const
 {
   TSTAT;
   
-  tag.tag_save( os );
+  tag_save( tag, os );
 
   tid.save( os );
   by_rank.save( os );
@@ -325,7 +325,7 @@ istream& VC_Rank::load ( istream& is )
 {
   TSTAT;
   
-  if (! tag.tag_chck( is ) ) { vc_con << VCFL; System::exit(-1); }
+  if (! tag_chck( tag, is ) ) { vc_con << VCFL; System::exit(-1); }
 
   erase();
   

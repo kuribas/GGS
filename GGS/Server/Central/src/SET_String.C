@@ -35,7 +35,7 @@
 
 using namespace std;
 
-const String SET_String::tag( "SET_String" );
+ccptr SET_String::tag = "SET_String";
 
 SET_String& SET_String::add( const SET_String& Set )
 {
@@ -86,7 +86,7 @@ ostream& SET_String::save( ostream& os ) const
 {
   TSTAT;
 
-  tag.tag_save( os );
+  tag_save( tag, os );
 
   return SET<String>::save( os );
 }
@@ -95,7 +95,7 @@ istream& SET_String::load( istream& is )
 {
   TSTAT;
 
-  if (! tag.tag_chck( is ) ) { vc_con << VCFL; System::exit(-1); }
+  if (! tag_chck( tag, is ) ) { vc_con << VCFL; System::exit(-1); }
 
   return SET<String>::load( is );
 }

@@ -107,7 +107,7 @@ protected:
   VEC<History> vec;
 
 private:
-  static const String tag;
+  static ccptr tag;
 };
 
 inline std::ostream& operator << ( std::ostream& os, const GAME_History& v )

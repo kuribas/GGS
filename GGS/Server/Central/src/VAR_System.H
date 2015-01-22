@@ -75,7 +75,7 @@ protected:
   mutable bool    dirty;
   
 private:
-  static VAR_Client svar;
+  VAR_Client svar;
 
   friend class EXE_Client;
   friend class IO_TCP_Client;

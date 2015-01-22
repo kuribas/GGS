@@ -35,8 +35,6 @@
 #include "TSTAT_Client.H"
 #endif
 
-VAR_Client VAR_Service::svar;
-
 using namespace std;
 
 VAR_Service::VAR_Service()

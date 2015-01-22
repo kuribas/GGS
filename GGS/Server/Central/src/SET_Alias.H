@@ -56,7 +56,7 @@ public:
   std::istream& load ( std::istream& is );
 
 private:
-  static const String tag;
+  static ccptr tag;
   
   uint4 _size; // # of aliases that will be actually saved
 };

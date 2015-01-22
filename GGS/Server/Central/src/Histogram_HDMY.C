@@ -34,7 +34,7 @@
 #include "TSTAT_Client.H"
 #endif
 
-const String Histogram_HDMY::tag( "Histogram_HDMY" );
+ccptr Histogram_HDMY::tag = "Histogram_HDMY";
 				  
 using namespace std;
 
@@ -87,7 +87,7 @@ ostream& Histogram_HDMY::save ( ostream& os ) const
 {
   TSTAT;
 
-  tag.tag_save( os );
+  tag_save( tag, os );
   
   _H.save( os );
   _D.save( os );
@@ -101,7 +101,7 @@ istream& Histogram_HDMY::load ( istream& is )
 {
   TSTAT;
 
-  if (! tag.tag_chck( is ) ) { vc_con << VCFL; System::exit(-1); }
+  if (! tag_chck( tag, is ) ) { vc_con << VCFL; System::exit(-1); }
 
   _H.load( is );
   _D.load( is );

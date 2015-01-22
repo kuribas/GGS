@@ -44,7 +44,7 @@ public:
   std::istream& load ( std::istream& is );
   
 private:
-  static const String tag;
+  static ccptr tag;
   
   Histogram _H; // 60 m(in)
   Histogram _D; // 24 H

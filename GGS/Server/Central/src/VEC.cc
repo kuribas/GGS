@@ -68,7 +68,7 @@ template<class O> std::istream& VEC<O>::load( std::istream& is )
   sint4 n = 0;
   is.read( cptr(&n), sizeof(n) );
   this->reserve( n );
-  for ( O o; --n >= 0 ; ) { ; push_back( o ); this->back().load( is ); }
+  for ( O o; --n >= 0 ; ) { ; this->push_back( o ); this->back().load( is ); }
   return is;
 }
 

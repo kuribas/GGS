@@ -93,7 +93,7 @@ istream& History::load ( istream& is )
 
 //
 
-const String VC_History::tag( "VC_History" );
+const char *VC_History::tag = "VC_History";
 
 VC_History& VC_History::push( const History& H )
 {
@@ -121,7 +121,7 @@ ostream& VC_History::save ( ostream& os ) const
 {
   TSTAT;
 
-  tag.tag_save( os );
+  tag_save( tag, os );
   
   os.write( ccptr(&len), sizeof(len) );
   vec.save( os );
@@ -133,7 +133,7 @@ istream& VC_History::load ( istream& is )
 {
   TSTAT;
   
-  if (! tag.tag_chck( is ) ) { vc_con << VCFL; System::exit(-1); }
+  if (! tag_chck( tag, is ) ) { vc_con << VCFL; System::exit(-1); }
 
   uint4 Len = len;
   is.read( cptr(&len), sizeof(len) );

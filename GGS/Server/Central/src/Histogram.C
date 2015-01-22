@@ -34,7 +34,7 @@
 #include "TSTAT_Client.H"
 #endif
 
-const String Histogram::tag( "Histogram" );
+ccptr Histogram::tag = "Histogram";
 
 using namespace std;
 
@@ -117,7 +117,7 @@ ostream& Histogram::save ( ostream& os ) const
 {
   TSTAT;
 
-  tag.tag_save( os );
+  tag_save( tag, os );
   
   arr.   save( os );
   minmax.save( os );
@@ -130,7 +130,7 @@ istream& Histogram::load ( istream& is )
 {
   TSTAT;
 
-  if (! tag.tag_chck( is ) ) { vc_con << VCFL; System::exit(-1); }
+  if (! tag_chck( tag, is ) ) { vc_con << VCFL; System::exit(-1); }
 
   size_t len = arr.size();
   arr.   load( is );

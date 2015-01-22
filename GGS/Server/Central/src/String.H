@@ -78,12 +78,15 @@ public:
   std::ostream& save ( std::ostream& os ) const;
   std::istream& load ( std::istream& is );
   
-  void tag_save ( std::ostream& os ) const; // save string
-  bool tag_chck ( std::istream& is ) const; // load string and check if it is same as this
-  
 private:
   //std::string::find;
 };
+
+
+ // save string
+void tag_save( ccptr tag, std::ostream& os);
+// load string and check if it is same as this
+bool tag_chck (ccptr tag, std::istream& is );
 
 inline std::ostream& operator << ( std::ostream& os, const String& V ) { return V.print( os ); }
 

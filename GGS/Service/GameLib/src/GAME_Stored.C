@@ -77,7 +77,7 @@ istream& Stored::load ( istream& is )
 
 //
 
-const String GAME_Stored::tag( "GAME_Stored" );
+ccptr GAME_Stored::tag = "GAME_Stored";
 
 bool GAME_Stored::operator[] ( const String& C ) const
 {
@@ -154,7 +154,7 @@ ostream& GAME_Stored::save ( ostream& os ) const
 {
   TSTAT;
 
-  tag.tag_save( os );
+  tag_save( tag, os );
   
   vec.save( os );
 
@@ -165,7 +165,7 @@ istream& GAME_Stored::load ( istream& is )
 {
   TSTAT;
   
-  if (! tag.tag_chck( is ) ) { vc_con << VCFL; System::exit(-1); }
+  if (! tag_chck( tag, is ) ) { vc_con << VCFL; System::exit(-1); }
 
   vec.load( is );
 

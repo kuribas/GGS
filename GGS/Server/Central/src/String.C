@@ -293,22 +293,24 @@ istream& String::load( istream& is )
   return is;
 }
 
-void String::tag_save( ostream& os ) const
+void tag_save(ccptr tag, ostream& os )
 {
+  String tagS = tag;
   TSTAT;
 
-  save( os );
+  tagS.save( os );
 }
 
-bool String::tag_chck( istream& is ) const
+bool tag_chck(ccptr tag, istream& is ) 
 {
+  String tagS = tag;
   TSTAT;
 
   String tmp;
 
   tmp.load( is );
 
-  return tmp == *this;
+  return tmp == tagS;
 }
 
 //: String.C (eof) (c) Igor

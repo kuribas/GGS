@@ -34,7 +34,7 @@
 
 using namespace std;
 
-const String SET_Alias::tag( "SET_Alias" );
+ccptr SET_Alias::tag = "SET_Alias";
 
 bool SET_Alias::replace_alias( String& Name, const SET_Alias* Next ) const
 {
@@ -189,7 +189,7 @@ ostream& SET_Alias::save( ostream& os ) const
 {
   TSTAT;
 
-  tag.tag_save( os );
+  tag_save( tag, os );
   
   os.write( ccptr(&_size), sizeof(_size) );
   const_iterator it = begin();
@@ -202,7 +202,7 @@ istream& SET_Alias::load( istream& is )
 {
   TSTAT;
 
-  if (! tag.tag_chck( is ) ) { vc_con << VCFL; System::exit(-1); }
+  if (! tag_chck( tag, is ) ) { vc_con << VCFL; System::exit(-1); }
   
   erase();
   sint4 n;

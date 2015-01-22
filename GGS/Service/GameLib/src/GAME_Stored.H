@@ -93,7 +93,7 @@ public:
   std::istream& load ( std::istream& is );
 
 protected:
-  static const String tag;
+  static ccptr tag;
   
   VEC<Stored> vec;
 };

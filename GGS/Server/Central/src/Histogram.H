@@ -43,7 +43,7 @@ public:
   std::istream& load ( std::istream& is );
   
 private:
-  static const String tag;
+  static ccptr tag;
   
   VEC< MinMax<sint8> >  arr;
   MinMax<sint8>         minmax;

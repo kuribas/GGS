@@ -31,7 +31,7 @@
 #include "TSTAT_Client.H"
 #endif
 
-const String SET_Rank::tag( "SET_Rank" );
+ccptr SET_Rank::tag( "SET_Rank" );
 
 using namespace std;
 
@@ -48,7 +48,7 @@ ostream& SET_Rank::save( ostream& os ) const
 {
   TSTAT;
   
-  tag.tag_save( os );
+  tag_save( tag, os );
   
   sint4 n = size();
   os.write( ccptr(&n), sizeof(n) );
@@ -62,7 +62,7 @@ istream& SET_Rank::load( istream& is )
 {
   TSTAT;
 
-  if (! tag.tag_chck( is ) ) { vc_con << VCFL; System::exit(-1); }
+  if (! tag_chck( tag, is ) ) { vc_con << VCFL; System::exit(-1); }
   
   erase();
   sint4 n = 0;

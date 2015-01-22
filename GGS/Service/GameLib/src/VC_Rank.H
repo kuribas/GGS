@@ -100,7 +100,7 @@ protected:
   VEC<Rank> by_rank;
 
 private:
-  static const String tag;
+  static ccptr tag;
 
   void sort_check() const;
 };

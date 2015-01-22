@@ -78,7 +78,7 @@ public:
   std::istream& load ( std::istream& is );
 
 private:
-  static const String tag;
+  static const char *tag;
   
   uint4        len;
   VEC<History> vec;

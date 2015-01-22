@@ -43,7 +43,7 @@ public:
   std::istream& load ( std::istream& is );
 
 private:
-  static const String tag;
+  static ccptr tag;
 };
 
 inline std::ostream& operator << ( std::ostream& os, const SET_String& v ) { return v.print( os, false, false ); }
